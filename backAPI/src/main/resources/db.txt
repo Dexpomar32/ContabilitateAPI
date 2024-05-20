@@ -1,0 +1,76 @@
+CREATE TABLE Clients (
+    client_id INT AUTO_INCREMENT PRIMARY KEY,
+    client_code VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    surname VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone_number INT NOT NULL
+);
+
+CREATE TABLE Contracts (
+    contract_id INT AUTO_INCREMENT PRIMARY KEY,
+    contract_code VARCHAR(255) UNIQUE NOT NULL,
+    date DATE NOT NULL,
+    validity_period DATE NOT NULL,
+    client_id INT,
+    CONSTRAINT fk_contract_client FOREIGN KEY (client_id) REFERENCES Clients(client_id)
+);
+
+CREATE TABLE Documents (
+    document_id INT AUTO_INCREMENT PRIMARY KEY,
+    document_code VARCHAR(255) UNIQUE NOT NULL,
+    document_type VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    text TEXT NOT NULL,
+    client_id INT,
+    CONSTRAINT fk_document_client FOREIGN KEY (client_id) REFERENCES Clients(client_id)
+);
+
+CREATE TABLE Projects (
+    project_id INT AUTO_INCREMENT PRIMARY KEY,
+    project_code VARCHAR(255) UNIQUE NOT NULL,
+    project_name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    client_id INT,
+    CONSTRAINT fk_project_client FOREIGN KEY (client_id) REFERENCES Clients(client_id)
+);
+
+CREATE TABLE Expenses (
+    expense_id INT AUTO_INCREMENT PRIMARY KEY,
+    expense_code VARCHAR(255) UNIQUE NOT NULL,
+    date DATE NOT NULL,
+    amount INT NOT NULL,
+    description TEXT NOT NULL,
+    project_id INT,
+    CONSTRAINT fk_expense_project FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+);
+
+CREATE TABLE Notes (
+    note_id INT AUTO_INCREMENT PRIMARY KEY,
+    note_code VARCHAR(255) UNIQUE NOT NULL,
+    note_text TEXT NOT NULL,
+    date DATE NOT NULL,
+    project_id INT,
+    CONSTRAINT fk_note_project FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+);
+
+CREATE TABLE Reports (
+    report_id INT AUTO_INCREMENT PRIMARY KEY,
+    report_code VARCHAR(255) UNIQUE NOT NULL,
+    report_date DATE NOT NULL,
+    report_text TEXT NOT NULL,
+    project_id INT,
+    CONSTRAINT fk_report_project FOREIGN KEY (project_id) REFERENCES Projects(project_id)
+);
+
+CREATE TABLE Sales (
+    sale_id INT AUTO_INCREMENT PRIMARY KEY,
+    sale_code VARCHAR(255) UNIQUE NOT NULL,
+    sale_date DATE NOT NULL,
+    amount INT NOT NULL,
+    client_id INT,
+    CONSTRAINT fk_sale_client FOREIGN KEY (client_id) REFERENCES Clients(client_id)
+);

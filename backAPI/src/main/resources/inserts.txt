@@ -1,0 +1,55 @@
+INSERT INTO Clients (client_code, name, surname, email, phone_number) VALUES
+('CL001', 'John', 'Doe', 'john.doe@example.com', 1234567890),
+('CL002', 'Jane', 'Smith', 'jane.smith@example.com', 2345678901),
+('CL003', 'Mike', 'Johnson', 'mike.johnson@example.com', 3456789012),
+('CL004', 'Emily', 'Davis', 'emily.davis@example.com', 4567890123),
+('CL005', 'Sarah', 'Brown', 'sarah.brown@example.com', 5678901234);
+
+INSERT INTO Contracts (contract_code, date, validity_period, client_id) VALUES
+('CN001', '2023-01-01', '2024-01-01', 1),
+('CN002', '2023-02-01', '2024-02-01', 2),
+('CN003', '2023-03-01', '2024-03-01', 3),
+('CN004', '2023-04-01', '2024-04-01', 4),
+('CN005', '2023-05-01', '2024-05-01', 5);
+
+INSERT INTO Documents (document_code, document_type, date, text, client_id) VALUES
+('DC001', 'Invoice', '2023-01-15', 'Invoice details for CL001', 1),
+('DC002', 'Contract', '2023-02-15', 'Contract details for CL002', 2),
+('DC003', 'Report', '2023-03-15', 'Report details for CL003', 3),
+('DC004', 'Memo', '2023-04-15', 'Memo details for CL004', 4),
+('DC005', 'Invoice', '2023-05-15', 'Invoice details for CL005', 5);
+
+INSERT INTO Projects (project_code, project_name, description, status, start_date, end_date, client_id) VALUES
+('PR001', 'Project Alpha', 'Description of Project Alpha', 'Active', '2023-01-01', '2023-12-31', 1),
+('PR002', 'Project Beta', 'Description of Project Beta', 'Completed', '2023-02-01', '2023-11-30', 2),
+('PR003', 'Project Gamma', 'Description of Project Gamma', 'On Hold', '2023-03-01', '2024-02-28', 3),
+('PR004', 'Project Delta', 'Description of Project Delta', 'Active', '2023-04-01', '2024-03-31', 4),
+('PR005', 'Project Epsilon', 'Description of Project Epsilon', 'Cancelled', '2023-05-01', '2023-10-31', 5);
+
+INSERT INTO Expenses (expense_code, date, amount, description, project_id) VALUES
+('EX001', '2023-01-10', 1000, 'Expense for Project Alpha', 1),
+('EX002', '2023-02-10', 2000, 'Expense for Project Beta', 2),
+('EX003', '2023-03-10', 1500, 'Expense for Project Gamma', 3),
+('EX004', '2023-04-10', 3000, 'Expense for Project Delta', 4),
+('EX005', '2023-05-10', 2500, 'Expense for Project Epsilon', 5);
+
+INSERT INTO Notes (note_code, note_text, date, project_id) VALUES
+('NT001', 'Note for Project Alpha', '2023-01-20', 1),
+('NT002', 'Note for Project Beta', '2023-02-20', 2),
+('NT003', 'Note for Project Gamma', '2023-03-20', 3),
+('NT004', 'Note for Project Delta', '2023-04-20', 4),
+('NT005', 'Note for Project Epsilon', '2023-05-20', 5);
+
+INSERT INTO Reports (report_code, report_date, report_text, project_id) VALUES
+('RP001', '2023-01-30', 'Report for Project Alpha', 1),
+('RP002', '2023-02-28', 'Report for Project Beta', 2),
+('RP003', '2023-03-30', 'Report for Project Gamma', 3),
+('RP004', '2023-04-30', 'Report for Project Delta', 4),
+('RP005', '2023-05-30', 'Report for Project Epsilon', 5);
+
+INSERT INTO Sales (sale_code, sale_date, amount, client_id) VALUES
+('SL001', '2023-01-25', 5000, 1),
+('SL002', '2023-02-25', 6000, 2),
+('SL003', '2023-03-25', 7000, 3),
+('SL004', '2023-04-25', 8000, 4),
+('SL005', '2023-05-25', 9000, 5);

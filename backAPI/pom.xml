@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.task</groupId>
-	<artifactId>Crud</artifactId>
+	<artifactId>backAPI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>CRUD</name>
 	<description>CRUD</description>

@@ -25,7 +25,6 @@ public class Notes {
     private String text;
     @Column(name = "date")
     private Date date;
-    @Column(name = "project")
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
     private Projects project;

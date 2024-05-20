@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <modules>
-        <module>Crud</module>
+        <module>backAPI</module>
     </modules>
     <groupId>com.task</groupId>
     <artifactId>ContabilitateAPI</artifactId>

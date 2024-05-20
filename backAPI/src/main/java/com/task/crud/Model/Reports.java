@@ -12,22 +12,19 @@ import java.sql.Date;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "Expenses")
-public class Expenses {
+@Table(name = "Reports")
+public class Reports {
     @Id
-    @Column(name = "expense_id")
+    @Column(name = "report_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "expense_code")
+    @Column(name = "report_code")
     private String code;
-    @Column(name = "date")
+    @Column(name = "report_date")
     private Date date;
-    @Column(name = "amount")
-    private Integer amount;
-    @Column(name = "description")
-    private String description;
-    @Column(name = "project")
+    @Column(name = "report_text")
+    private String text;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
     private Projects project;
