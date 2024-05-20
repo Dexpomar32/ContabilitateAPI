@@ -4,6 +4,8 @@ import com.task.crud.DTO.Records.ProjectsRecord;
 import com.task.crud.Model.Projects;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.function.Function;
 
 @Service
@@ -15,9 +17,14 @@ public class ProjectsMapper implements Function<Projects, ProjectsRecord> {
                 projects.getName(),
                 projects.getDescription(),
                 projects.getStatus(),
-                projects.getStartDate(),
-                projects.getEndDate(),
+                formatDate(projects.getStartDate()),
+                formatDate(projects.getEndDate()),
                 projects.getClient().getCode()
         );
+    }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date);
     }
 }

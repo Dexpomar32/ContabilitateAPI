@@ -4,6 +4,8 @@ import com.task.crud.DTO.Records.SalesRecord;
 import com.task.crud.Model.Sales;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.function.Function;
 
 @Service
@@ -12,9 +14,14 @@ public class SalesMapper implements Function<Sales, SalesRecord> {
     public SalesRecord apply(Sales sales) {
         return new SalesRecord(
                 sales.getCode(),
-                sales.getDate(),
+                formatDate(sales.getDate()),
                 sales.getAmount(),
                 sales.getClient().getCode()
         );
+    }
+
+    private String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(date);
     }
 }
