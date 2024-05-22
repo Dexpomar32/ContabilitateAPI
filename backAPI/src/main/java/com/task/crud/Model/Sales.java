@@ -24,7 +24,7 @@ public class Sales {
     private Date date;
     @Column(name = "amount")
     private Integer amount;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "client_id")
     private Clients client;
     @Transient
