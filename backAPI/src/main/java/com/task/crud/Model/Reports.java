@@ -28,4 +28,6 @@ public class Reports {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
     private Projects project;
+    @Transient
+    private String projectCode;
 }

@@ -25,7 +25,9 @@ public class Notes {
     private String text;
     @Column(name = "date")
     private Date date;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "project_id")
     private Projects project;
+    @Transient
+    private String projectCode;
 }

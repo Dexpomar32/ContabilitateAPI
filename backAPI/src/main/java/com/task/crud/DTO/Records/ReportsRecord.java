@@ -4,5 +4,5 @@ public record ReportsRecord(
         String code,
         String date,
         String text,
-        String projectName
+        String projectCode
 ) {}

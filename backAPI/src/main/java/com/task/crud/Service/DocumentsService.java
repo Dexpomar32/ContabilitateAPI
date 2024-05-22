@@ -2,7 +2,9 @@ package com.task.crud.Service;
 
 import com.task.crud.DTO.Mapper.DocumentsMapper;
 import com.task.crud.DTO.Records.DocumentsRecord;
+import com.task.crud.Model.Clients;
 import com.task.crud.Model.Documents;
+import com.task.crud.Repository.ClientsRepository;
 import com.task.crud.Repository.DocumentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,13 @@ import java.util.stream.Stream;
 public class DocumentsService {
     private final DocumentsRepository documentsRepository;
     private final DocumentsMapper documentsMapper;
+    private final ClientsRepository clientsRepository;
 
     @Autowired
-    public DocumentsService(DocumentsRepository documentsRepository, DocumentsMapper documentsMapper) {
+    public DocumentsService(DocumentsRepository documentsRepository, DocumentsMapper documentsMapper, ClientsRepository clientsRepository) {
         this.documentsRepository = documentsRepository;
         this.documentsMapper = documentsMapper;
+        this.clientsRepository = clientsRepository;
     }
 
     public Optional<List<DocumentsRecord>> getAll() {
@@ -43,6 +47,8 @@ public class DocumentsService {
             return Optional.empty();
         }
 
+        Clients client = clientsRepository.findByCode(document.getClientCode());
+        document.setClient(client);
         documentsRepository.save(document);
         return Optional.ofNullable(documentsMapper.apply(document));
     }
@@ -52,12 +58,15 @@ public class DocumentsService {
             return Optional.empty();
         }
 
+        Clients client = clientsRepository.findByCode(document.getClientCode());
+        document.setClient(client);
+
         return Optional.ofNullable(documentsRepository.findByCode(document.getCode()))
                 .map(existingDocument -> {
                     existingDocument.setType(document.getType());
                     existingDocument.setDate(document.getDate());
                     existingDocument.setText(document.getText());
-                    existingDocument.getClient().setCode(document.getCode());
+                    existingDocument.setClient(document.getClient());
                     documentsRepository.save(existingDocument);
                     return documentsMapper.apply(existingDocument);
                 });
@@ -73,7 +82,7 @@ public class DocumentsService {
     }
 
     public boolean check(Documents document) {
-        return Stream.of(document.getCode(), document.getType(), document.getDate(), document.getText(), document.getClient().getCode())
+        return Stream.of(document.getCode(), document.getType(), document.getDate(), document.getText(), document.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 }

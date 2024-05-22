@@ -2,7 +2,9 @@ package com.task.crud.Service;
 
 import com.task.crud.DTO.Mapper.ProjectsMapper;
 import com.task.crud.DTO.Records.ProjectsRecord;
+import com.task.crud.Model.Clients;
 import com.task.crud.Model.Projects;
+import com.task.crud.Repository.ClientsRepository;
 import com.task.crud.Repository.ProjectsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,13 @@ import java.util.stream.Stream;
 public class ProjectsService {
     private final ProjectsRepository projectsRepository;
     private final ProjectsMapper projectsMapper;
+    private final ClientsRepository clientsRepository;
 
     @Autowired
-    public ProjectsService(ProjectsRepository projectsRepository, ProjectsMapper projectsMapper) {
+    public ProjectsService(ProjectsRepository projectsRepository, ProjectsMapper projectsMapper, ClientsRepository clientsRepository) {
         this.projectsRepository = projectsRepository;
         this.projectsMapper = projectsMapper;
+        this.clientsRepository = clientsRepository;
     }
 
     public Optional<List<ProjectsRecord>> getAll() {
@@ -43,6 +47,8 @@ public class ProjectsService {
             return Optional.empty();
         }
 
+        Clients client = clientsRepository.findByCode(project.getClientCode());
+        project.setClient(client);
         projectsRepository.save(project);
         return Optional.ofNullable(projectsMapper.apply(project));
     }
@@ -52,6 +58,9 @@ public class ProjectsService {
             return Optional.empty();
         }
 
+        Clients client = clientsRepository.findByCode(project.getClientCode());
+        project.setClient(client);
+
         return Optional.ofNullable(projectsRepository.findByCode(project.getCode()))
                 .map(existingProject -> {
                     existingProject.setName(project.getName());
@@ -59,7 +68,7 @@ public class ProjectsService {
                     existingProject.setStatus(project.getStatus());
                     existingProject.setStartDate(project.getStartDate());
                     existingProject.setEndDate(project.getEndDate());
-                    existingProject.getClient().setCode(project.getCode());
+                    existingProject.setClient(project.getClient());
                     projectsRepository.save(existingProject);
                     return projectsMapper.apply(existingProject);
                 });
@@ -76,7 +85,7 @@ public class ProjectsService {
 
     public boolean check(Projects project) {
         return Stream.of(project.getCode(), project.getName(), project.getDescription(), project.getStatus(), project.getStartDate(),
-                        project.getEndDate(), project.getClient().getCode())
+                        project.getEndDate(), project.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 }

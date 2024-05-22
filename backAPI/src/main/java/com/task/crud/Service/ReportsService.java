@@ -2,7 +2,9 @@ package com.task.crud.Service;
 
 import com.task.crud.DTO.Mapper.ReportsMapper;
 import com.task.crud.DTO.Records.ReportsRecord;
+import com.task.crud.Model.Projects;
 import com.task.crud.Model.Reports;
+import com.task.crud.Repository.ProjectsRepository;
 import com.task.crud.Repository.ReportsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +16,15 @@ import java.util.stream.Stream;
 
 @Service
 public class ReportsService {
-    public final ReportsRepository reportsRepository;
-    public final ReportsMapper reportsMapper;
+    private final ReportsRepository reportsRepository;
+    private final ReportsMapper reportsMapper;
+    private final ProjectsRepository projectsRepository;
 
     @Autowired
-    public ReportsService(ReportsRepository reportsRepository, ReportsMapper reportsMapper) {
+    public ReportsService(ReportsRepository reportsRepository, ReportsMapper reportsMapper, ProjectsRepository projectsRepository) {
         this.reportsRepository = reportsRepository;
         this.reportsMapper = reportsMapper;
+        this.projectsRepository = projectsRepository;
     }
 
     public Optional<List<ReportsRecord>> getAll() {
@@ -43,6 +47,8 @@ public class ReportsService {
             return Optional.empty();
         }
 
+        Projects projects = projectsRepository.findByCode(report.getProjectCode());
+        report.setProject(projects);
         reportsRepository.save(report);
         return Optional.ofNullable(reportsMapper.apply(report));
     }
@@ -52,11 +58,14 @@ public class ReportsService {
             return Optional.empty();
         }
 
+        Projects projects = projectsRepository.findByCode(report.getProjectCode());
+        report.setProject(projects);
+
         return Optional.ofNullable(reportsRepository.findByCode(report.getCode()))
                 .map(existingReport -> {
                     existingReport.setDate(report.getDate());
                     existingReport.setText(report.getText());
-                    existingReport.getProject().setCode(report.getCode());
+                    existingReport.setProject(report.getProject());
                     reportsRepository.save(existingReport);
                     return reportsMapper.apply(existingReport);
                 });
@@ -72,7 +81,7 @@ public class ReportsService {
     }
 
     public boolean check(Reports report) {
-        return Stream.of(report.getCode(), report.getDate(), report.getText(), report.getProject().getCode())
+        return Stream.of(report.getCode(), report.getDate(), report.getText(), report.getProjectCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 }

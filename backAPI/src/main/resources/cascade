@@ -1,0 +1,27 @@
+-- For Contracts table
+ALTER TABLE Contracts DROP FOREIGN KEY fk_contract_client;
+ALTER TABLE Contracts ADD CONSTRAINT fk_contract_client FOREIGN KEY (client_id) REFERENCES Clients(client_id) ON DELETE CASCADE;
+
+-- For Documents table
+ALTER TABLE Documents DROP FOREIGN KEY fk_document_client;
+ALTER TABLE Documents ADD CONSTRAINT fk_document_client FOREIGN KEY (client_id) REFERENCES Clients(client_id) ON DELETE CASCADE;
+
+-- For Projects table
+ALTER TABLE Projects DROP FOREIGN KEY fk_project_client;
+ALTER TABLE Projects ADD CONSTRAINT fk_project_client FOREIGN KEY (client_id) REFERENCES Clients(client_id) ON DELETE CASCADE;
+
+-- For Expenses table
+ALTER TABLE Expenses DROP FOREIGN KEY fk_expense_project;
+ALTER TABLE Expenses ADD CONSTRAINT fk_expense_project FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE;
+
+-- For Notes table
+ALTER TABLE Notes DROP FOREIGN KEY fk_note_project;
+ALTER TABLE Notes ADD CONSTRAINT fk_note_project FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE;
+
+-- For Reports table
+ALTER TABLE Reports DROP FOREIGN KEY fk_report_project;
+ALTER TABLE Reports ADD CONSTRAINT fk_report_project FOREIGN KEY (project_id) REFERENCES Projects(project_id) ON DELETE CASCADE;
+
+-- For Sales table
+ALTER TABLE Sales DROP FOREIGN KEY fk_sale_client;
+ALTER TABLE Sales ADD CONSTRAINT fk_sale_client FOREIGN KEY (client_id) REFERENCES Clients(client_id) ON DELETE CASCADE;

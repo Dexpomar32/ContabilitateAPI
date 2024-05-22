@@ -2,8 +2,11 @@ package com.task.crud.Service;
 
 import com.task.crud.DTO.Mapper.NotesMapper;
 import com.task.crud.DTO.Records.NotesRecord;
+import com.task.crud.Model.Clients;
 import com.task.crud.Model.Notes;
+import com.task.crud.Model.Projects;
 import com.task.crud.Repository.NotesRepository;
+import com.task.crud.Repository.ProjectsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +19,13 @@ import java.util.stream.Stream;
 public class NotesService {
     private final NotesRepository notesRepository;
     private final NotesMapper notesMapper;
+    private final ProjectsRepository projectsRepository;
 
     @Autowired
-    public NotesService(NotesRepository notesRepository, NotesMapper notesMapper) {
+    public NotesService(NotesRepository notesRepository, NotesMapper notesMapper, ProjectsRepository projectsRepository) {
         this.notesRepository = notesRepository;
         this.notesMapper = notesMapper;
+        this.projectsRepository = projectsRepository;
     }
 
     public Optional<List<NotesRecord>> getAll() {
@@ -43,6 +48,8 @@ public class NotesService {
             return Optional.empty();
         }
 
+        Projects projects = projectsRepository.findByCode(note.getProjectCode());
+        note.setProject(projects);
         notesRepository.save(note);
         return Optional.ofNullable(notesMapper.apply(note));
     }
@@ -52,11 +59,14 @@ public class NotesService {
             return Optional.empty();
         }
 
+        Projects projects = projectsRepository.findByCode(note.getProjectCode());
+        note.setProject(projects);
+
         return Optional.ofNullable(notesRepository.findByCode(note.getCode()))
                 .map(existingNote -> {
                     existingNote.setText(note.getText());
                     existingNote.setDate(note.getDate());
-                    existingNote.getProject().setCode(note.getCode());
+                    existingNote.setProject(note.getProject());
                     notesRepository.save(existingNote);
                     return notesMapper.apply(existingNote);
                 });
@@ -72,7 +82,7 @@ public class NotesService {
     }
 
     public boolean check(Notes note) {
-        return Stream.of(note.getCode(), note.getText(), note.getDate(), note.getProject().getCode())
+        return Stream.of(note.getCode(), note.getText(), note.getDate(), note.getProjectCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 }

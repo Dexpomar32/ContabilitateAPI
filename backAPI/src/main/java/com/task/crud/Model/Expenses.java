@@ -27,7 +27,9 @@ public class Expenses {
     private Integer amount;
     @Column(name = "description")
     private String description;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "project_id")
     private Projects project;
+    @Transient
+    private String projectCode;
 }

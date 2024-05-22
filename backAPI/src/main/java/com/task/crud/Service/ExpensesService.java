@@ -3,7 +3,9 @@ package com.task.crud.Service;
 import com.task.crud.DTO.Mapper.ExpensesMapper;
 import com.task.crud.DTO.Records.ExpensesRecord;
 import com.task.crud.Model.Expenses;
+import com.task.crud.Model.Projects;
 import com.task.crud.Repository.ExpensesRepository;
+import com.task.crud.Repository.ProjectsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +18,13 @@ import java.util.stream.Stream;
 public class ExpensesService {
     private final ExpensesRepository expensesRepository;
     private final ExpensesMapper expensesMapper;
+    private final ProjectsRepository projectsRepository;
 
     @Autowired
-    public ExpensesService(ExpensesRepository expensesRepository, ExpensesMapper expensesMapper) {
+    public ExpensesService(ExpensesRepository expensesRepository, ExpensesMapper expensesMapper, ProjectsRepository projectsRepository) {
         this.expensesRepository = expensesRepository;
         this.expensesMapper = expensesMapper;
+        this.projectsRepository = projectsRepository;
     }
 
     public Optional<List<ExpensesRecord>> getAll() {
@@ -43,6 +47,8 @@ public class ExpensesService {
             return Optional.empty();
         }
 
+        Projects projects = projectsRepository.findByCode(expense.getProjectCode());
+        expense.setProject(projects);
         expensesRepository.save(expense);
         return Optional.ofNullable(expensesMapper.apply(expense));
     }
@@ -52,12 +58,15 @@ public class ExpensesService {
             return Optional.empty();
         }
 
+        Projects projects = projectsRepository.findByCode(expense.getProjectCode());
+        expense.setProject(projects);
+
         return Optional.ofNullable(expensesRepository.findByCode(expense.getCode()))
                 .map(existingExpense -> {
                     existingExpense.setDate(expense.getDate());
                     existingExpense.setAmount(expense.getAmount());
                     existingExpense.setDescription(expense.getDescription());
-                    existingExpense.getProject().setCode(expense.getCode());
+                    existingExpense.setProject(expense.getProject());
                     expensesRepository.save(existingExpense);
                     return expensesMapper.apply(existingExpense);
                 });
@@ -73,7 +82,7 @@ public class ExpensesService {
     }
 
     public boolean check(Expenses expense) {
-        return Stream.of(expense.getCode(), expense.getDate(), expense.getAmount(), expense.getDescription(), expense.getProject().getCode())
+        return Stream.of(expense.getCode(), expense.getDate(), expense.getAmount(), expense.getDescription(), expense.getProjectCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 }

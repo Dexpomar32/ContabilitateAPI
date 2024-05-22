@@ -27,4 +27,6 @@ public class Sales {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
     private Clients client;
+    @Transient
+    private String clientCode;
 }

@@ -2,7 +2,9 @@ package com.task.crud.Service;
 
 import com.task.crud.DTO.Mapper.SalesMapper;
 import com.task.crud.DTO.Records.SalesRecord;
+import com.task.crud.Model.Clients;
 import com.task.crud.Model.Sales;
+import com.task.crud.Repository.ClientsRepository;
 import com.task.crud.Repository.SalesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,13 @@ import java.util.stream.Stream;
 public class SalesService {
     private final SalesRepository salesRepository;
     private final SalesMapper salesMapper;
+    private final ClientsRepository clientsRepository;
 
     @Autowired
-    public SalesService(SalesRepository salesRepository, SalesMapper salesMapper) {
+    public SalesService(SalesRepository salesRepository, SalesMapper salesMapper, ClientsRepository clientsRepository) {
         this.salesRepository = salesRepository;
         this.salesMapper = salesMapper;
+        this.clientsRepository = clientsRepository;
     }
 
     public Optional<List<SalesRecord>> getAll() {
@@ -43,6 +47,8 @@ public class SalesService {
             return Optional.empty();
         }
 
+        Clients clients = clientsRepository.findByCode(sale.getClientCode());
+        sale.setClient(clients);
         salesRepository.save(sale);
         return Optional.ofNullable(salesMapper.apply(sale));
     }
@@ -52,11 +58,14 @@ public class SalesService {
             return Optional.empty();
         }
 
+        Clients clients = clientsRepository.findByCode(sale.getClientCode());
+        sale.setClient(clients);
+
         return Optional.ofNullable(salesRepository.findByCode(sale.getCode()))
                 .map(existingSale -> {
                     existingSale.setDate(sale.getDate());
                     existingSale.setAmount(sale.getAmount());
-                    existingSale.getClient().setCode(sale.getCode());
+                    existingSale.setClient(sale.getClient());
                     salesRepository.save(existingSale);
                     return salesMapper.apply(existingSale);
                 });
@@ -72,7 +81,7 @@ public class SalesService {
     }
 
     public boolean check(Sales sale) {
-        return Stream.of(sale.getCode(), sale.getDate(), sale.getAmount(), sale.getClient().getCode())
+        return Stream.of(sale.getCode(), sale.getDate(), sale.getAmount(), sale.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 }

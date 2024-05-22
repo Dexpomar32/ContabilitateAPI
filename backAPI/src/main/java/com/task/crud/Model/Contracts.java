@@ -25,7 +25,9 @@ public class Contracts {
     private Date date;
     @Column(name = "validity_period")
     private Date period;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "client_id")
     private Clients client;
+    @Transient
+    private String clientCode;
 }

@@ -27,7 +27,9 @@ public class Documents {
     private Date date;
     @Column(name = "text")
     private String text;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "client_id")
     private Clients client;
+    @Transient
+    private String clientCode;
 }

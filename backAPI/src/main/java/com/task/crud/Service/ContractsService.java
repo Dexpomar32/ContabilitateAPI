@@ -2,7 +2,9 @@ package com.task.crud.Service;
 
 import com.task.crud.DTO.Mapper.ContractsMapper;
 import com.task.crud.DTO.Records.ContractsRecord;
+import com.task.crud.Model.Clients;
 import com.task.crud.Model.Contracts;
+import com.task.crud.Repository.ClientsRepository;
 import com.task.crud.Repository.ContractsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,13 @@ import java.util.stream.Stream;
 public class ContractsService {
     private final ContractsRepository contractsRepository;
     private final ContractsMapper contractsMapper;
+    private final ClientsRepository clientsRepository;
 
     @Autowired
-    public ContractsService(ContractsRepository contractsRepository, ContractsMapper contractsMapper) {
+    public ContractsService(ContractsRepository contractsRepository, ContractsMapper contractsMapper, ClientsRepository clientsRepository) {
         this.contractsRepository = contractsRepository;
         this.contractsMapper = contractsMapper;
+        this.clientsRepository = clientsRepository;
     }
 
     public Optional<List<ContractsRecord>> getAll() {
@@ -43,6 +47,8 @@ public class ContractsService {
             return Optional.empty();
         }
 
+        Clients client = clientsRepository.findByCode(contract.getClientCode());
+        contract.setClient(client);
         contractsRepository.save(contract);
         return Optional.ofNullable(contractsMapper.apply(contract));
     }
@@ -52,11 +58,14 @@ public class ContractsService {
             return Optional.empty();
         }
 
+        Clients client = clientsRepository.findByCode(contract.getClientCode());
+        contract.setClient(client);
+
         return Optional.ofNullable(contractsRepository.findByCode(contract.getCode()))
                 .map(existingContract -> {
                     existingContract.setDate(contract.getDate());
                     existingContract.setPeriod(contract.getPeriod());
-                    existingContract.getClient().setCode(contract.getCode());
+                    existingContract.setClient(contract.getClient());
                     contractsRepository.save(existingContract);
                     return contractsMapper.apply(existingContract);
                 });
@@ -72,7 +81,7 @@ public class ContractsService {
     }
 
     public boolean check(Contracts contract) {
-        return Stream.of(contract.getCode(), contract.getDate(), contract.getPeriod(), contract.getClient().getCode())
+        return Stream.of(contract.getCode(), contract.getDate(), contract.getPeriod(), contract.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 }
