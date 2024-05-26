@@ -11,8 +11,8 @@
 	<groupId>com.task</groupId>
 	<artifactId>backAPI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CRUD</name>
-	<description>CRUD</description>
+	<name>backAPI</name>
+	<description>backAPI</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
