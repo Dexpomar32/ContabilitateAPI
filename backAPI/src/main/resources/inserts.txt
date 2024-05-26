@@ -1,23 +1,23 @@
 INSERT INTO Clients (client_code, name, surname, email, phone_number) VALUES
-('CL001', 'John', 'Doe', 'john.doe@example.com', 1234567890),
-('CL002', 'Jane', 'Smith', 'jane.smith@example.com', 2345678901),
-('CL003', 'Mike', 'Johnson', 'mike.johnson@example.com', 3456789012),
-('CL004', 'Emily', 'Davis', 'emily.davis@example.com', 4567890123),
-('CL005', 'Sarah', 'Brown', 'sarah.brown@example.com', 5678901234);
+('CL001', 'John', 'Doe', 'john.doe@example.com', 12345678),
+('CL002', 'Jane', 'Smith', 'jane.smith@example.com', 23456789),
+('CL003', 'Mike', 'Johnson', 'mike.johnson@example.com', 34567890),
+('CL004', 'Emily', 'Davis', 'emily.davis@example.com', 45678901),
+('CL005', 'Sarah', 'Brown', 'sarah.brown@example.com', 56789012);
 
 INSERT INTO Contracts (contract_code, date, validity_period, client_id) VALUES
-('CN001', '2023-01-01', '2024-01-01', 1),
-('CN002', '2023-02-01', '2024-02-01', 2),
-('CN003', '2023-03-01', '2024-03-01', 3),
-('CN004', '2023-04-01', '2024-04-01', 4),
-('CN005', '2023-05-01', '2024-05-01', 5);
+('CN001', '2023-01-01', '2024-01-01', 36),
+('CN002', '2023-02-01', '2024-02-01', 37),
+('CN003', '2023-03-01', '2024-03-01', 38),
+('CN004', '2023-04-01', '2024-04-01', 39),
+('CN005', '2023-05-01', '2024-05-01', 40);
 
 INSERT INTO Documents (document_code, document_type, date, text, client_id) VALUES
-('DC001', 'Invoice', '2023-01-15', 'Invoice details for CL001', 1),
-('DC002', 'Contract', '2023-02-15', 'Contract details for CL002', 2),
-('DC003', 'Report', '2023-03-15', 'Report details for CL003', 3),
-('DC004', 'Memo', '2023-04-15', 'Memo details for CL004', 4),
-('DC005', 'Invoice', '2023-05-15', 'Invoice details for CL005', 5);
+('DC001', 'Invoice', '2023-01-15', 'Invoice details for CL001', 36),
+('DC002', 'Contract', '2023-02-15', 'Contract details for CL002', 37),
+('DC003', 'Report', '2023-03-15', 'Report details for CL003', 38),
+('DC004', 'Memo', '2023-04-15', 'Memo details for CL004', 39),
+('DC005', 'Invoice', '2023-05-15', 'Invoice details for CL005', 40);
 
 INSERT INTO Projects (project_code, project_name, description, status, start_date, end_date, client_id) VALUES
 ('PR001', 'Project Alpha', 'Description of Project Alpha', 'Active', '2023-01-01', '2023-12-31', 1),

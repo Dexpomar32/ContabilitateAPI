@@ -11,3 +11,8 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 server:
   port: 8080
+authentication:
+  app:
+    jwtSecret: mySuperSecretAndLongKey123!@#$DSHJKFDSKFHJKbsdjdkbkjhHFHGgkJGHFhjCNVBGJBHJJGHJgKBKJ
+    ## 12 hours expiration time
+    jwtExpirationMs: 43200000
