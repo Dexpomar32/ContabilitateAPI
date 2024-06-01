@@ -27,6 +27,11 @@ public class Sales {
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "client_id")
     private Clients client;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "product_id")
+    private Products product;
     @Transient
     private String clientCode;
+    @Transient
+    private String productCode;
 }

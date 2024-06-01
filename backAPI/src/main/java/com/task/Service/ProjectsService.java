@@ -3,6 +3,7 @@ package com.task.Service;
 import com.task.DTO.Mapper.ProjectsMapper;
 import com.task.DTO.Records.ProjectsRecord;
 import com.task.Model.Clients;
+import com.task.Model.CountResponse;
 import com.task.Model.Projects;
 import com.task.Repository.ClientsRepository;
 import com.task.Repository.ProjectsRepository;
@@ -81,6 +82,11 @@ public class ProjectsService {
             optionalProject.ifPresent(projectsRepository::delete);
             return projectsMapper.apply(client);
         });
+    }
+
+    public Optional<CountResponse> count() {
+        Long count = projectsRepository.count();
+        return Optional.of(new CountResponse(count));
     }
 
     public boolean check(Projects project) {

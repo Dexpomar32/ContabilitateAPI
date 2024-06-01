@@ -16,7 +16,8 @@ public class SalesMapper implements Function<Sales, SalesRecord> {
                 sales.getCode(),
                 formatDate(sales.getDate()),
                 sales.getAmount(),
-                sales.getClient().getCode()
+                sales.getClient().getCode(),
+                sales.getProduct().getCode()
         );
     }
 

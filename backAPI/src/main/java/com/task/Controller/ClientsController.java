@@ -2,6 +2,7 @@ package com.task.Controller;
 
 import com.task.DTO.Records.ClientsRecord;
 import com.task.Model.Clients;
+import com.task.Model.CountResponse;
 import com.task.Service.ClientsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,14 @@ public class ClientsController {
         Optional<ClientsRecord> clientsRecord = clientsService.delete(code);
         return clientsRecord.isPresent() ?
                 new ResponseEntity<>(clientsRecord, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Optional<CountResponse>> getCount() {
+        Optional<CountResponse> count = clientsService.count();
+        return count.isPresent() ?
+                new ResponseEntity<>(count, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

@@ -1,5 +1,6 @@
 package com.task.Service;
 
+import com.task.Model.CountResponse;
 import com.task.Repository.ClientsRepository;
 import com.task.DTO.Mapper.ClientsMapper;
 import com.task.DTO.Records.ClientsRecord;
@@ -70,6 +71,11 @@ public class ClientsService {
             optionalClient.ifPresent(clientsRepository::delete);
             return clientsMapper.apply(client);
         });
+    }
+
+    public Optional<CountResponse> count() {
+        Long count = clientsRepository.count();
+        return Optional.of(new CountResponse(count));
     }
 
     public boolean check(Clients client) {

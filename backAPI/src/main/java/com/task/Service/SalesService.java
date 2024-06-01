@@ -48,6 +48,7 @@ public class SalesService {
         }
 
         Clients clients = clientsRepository.findByCode(sale.getClientCode());
+
         sale.setClient(clients);
         salesRepository.save(sale);
         return Optional.ofNullable(salesMapper.apply(sale));

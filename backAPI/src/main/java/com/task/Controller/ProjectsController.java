@@ -1,6 +1,7 @@
 package com.task.Controller;
 
 import com.task.DTO.Records.ProjectsRecord;
+import com.task.Model.CountResponse;
 import com.task.Model.Projects;
 import com.task.Service.ProjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
@@ -56,11 +59,11 @@ public class ProjectsController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<Optional<ProjectsRecord>> delete(@RequestParam String code) {
-        Optional<ProjectsRecord> projectsRecord = projectsService.delete(code);
-        return projectsRecord.isPresent() ?
-                new ResponseEntity<>(projectsRecord, HttpStatus.OK) :
+    @GetMapping("/count")
+    public ResponseEntity<Optional<CountResponse>> getCount() {
+        Optional<CountResponse> count = projectsService.count();
+        return count.isPresent() ?
+                new ResponseEntity<>(count, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
