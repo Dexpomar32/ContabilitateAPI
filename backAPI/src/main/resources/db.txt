@@ -85,3 +85,12 @@ CREATE TABLE Sales (
     CONSTRAINT fk_sale_client FOREIGN KEY (client_id) REFERENCES Clients(client_id) ON DELETE CASCADE,
     CONSTRAINT fk_sale_product FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
 );
+
+CREATE TABLE Income (
+    income_id INT AUTO_INCREMENT PRIMARY KEY,
+    income_code VARCHAR(255) UNIQUE NOT NULL,
+    sale_date DATE NOT NULL,
+    amount DECIMAL(10, 2) NOT NULL,
+    sale_id INT,
+    CONSTRAINT fk_company_income_sale FOREIGN KEY (sale_id) REFERENCES Sales(sale_id) ON DELETE CASCADE
+);
