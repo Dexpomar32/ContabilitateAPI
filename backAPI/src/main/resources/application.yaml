@@ -10,7 +10,7 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 server:
-  port: 8080
+  port: 8081
 authentication:
   app:
     jwtSecret: mySuperSecretAndLongKey123!@#$DSHJKFDSKFHJKbsdjdkbkjhHFHGgkJGHFhjCNVBGJBHJJGHJgKBKJ

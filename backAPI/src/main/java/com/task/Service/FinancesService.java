@@ -23,7 +23,7 @@ public class FinancesService {
     }
 
     public Optional<List<Finances>> recent() {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("recentFinancialChanges");
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("RecentFinancialChanges");
         List<Object[]> results = storedProcedureQuery.getResultList();
         List<Finances> financesList = new ArrayList<>();
 
