@@ -1,6 +1,7 @@
 package com.task.Controller;
 
 import com.task.DTO.Records.ProjectsRecord;
+import com.task.Model.CompletionPercentage;
 import com.task.Model.CountResponse;
 import com.task.Model.Deadline;
 import com.task.Model.Projects;
@@ -78,10 +79,10 @@ public class ProjectsController {
     }
 
     @GetMapping("/percentage")
-    public ResponseEntity<Optional<List<ProjectsRecord>>> percentage() {
-        Optional<List<ProjectsRecord>> projectsRecordList = projectsService.percentage();
-        return projectsRecordList.isPresent() ?
-                new ResponseEntity<>(projectsRecordList, HttpStatus.OK) :
+    public ResponseEntity<Optional<List<CompletionPercentage>>> percentage() {
+        Optional<List<CompletionPercentage>> completionPercentageList = projectsService.percentage();
+        return completionPercentageList.isPresent() ?
+                new ResponseEntity<>(completionPercentageList, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

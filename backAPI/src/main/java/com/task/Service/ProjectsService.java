@@ -2,19 +2,18 @@ package com.task.Service;
 
 import com.task.DTO.Mapper.ProjectsMapper;
 import com.task.DTO.Records.ProjectsRecord;
-import com.task.Model.Clients;
-import com.task.Model.CountResponse;
-import com.task.Model.Projects;
+import com.task.Model.*;
 import com.task.Repository.ClientsRepository;
 import com.task.Repository.ProjectsRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -95,17 +94,21 @@ public class ProjectsService {
         return Optional.of(new CountResponse(count));
     }
 
-    public Optional<List<ProjectsRecord>> percentage() {
-        List<Projects> results = entityManager.createStoredProcedureQuery("CompletionPercentage", Projects.class)
-                .getResultList();
+    public Optional<List<CompletionPercentage>> percentage() {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("CompletionPercentage");
+        List<Object[]> results = storedProcedureQuery.getResultList();
+        List<CompletionPercentage> completionPercentageList = new ArrayList<>();
 
-        List<ProjectsRecord> projectRecords = results.stream()
-                .map(projectsMapper)
-                .collect(Collectors.toList());
+        for (Object[] result : results) {
+            String code = (String) result[0];
+            String name = (String) result[1];
+            Integer percentage = (Integer) result[2];
+            CompletionPercentage completionPercentage = new CompletionPercentage(code, name, percentage);
+            completionPercentageList.add(completionPercentage);
+        }
 
-        return Optional.of(projectRecords);
+        return Optional.of(completionPercentageList);
     }
-
 
     public boolean check(Projects project) {
         return Stream.of(project.getCode(), project.getName(), project.getDescription(), project.getStatus(), project.getStartDate(),
