@@ -15,7 +15,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
-@RequestMapping("/notes")
+@RequestMapping("/api/v1/notes")
 public class NotesController {
     private final NotesService notesService;
 

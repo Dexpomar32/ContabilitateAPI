@@ -2,7 +2,9 @@ package com.task.Controller;
 
 import com.task.DTO.Records.ProjectsRecord;
 import com.task.Model.CountResponse;
+import com.task.Model.Deadline;
 import com.task.Model.Projects;
+import com.task.Service.DeadlineService;
 import com.task.Service.ProjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,21 +12,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
-@RequestMapping("/projects")
+@RequestMapping("/api/v1/projects")
 public class ProjectsController {
     private final ProjectsService projectsService;
+    private final DeadlineService deadlineService;
 
     @Autowired
-    public ProjectsController(ProjectsService projectsService) {
+    public ProjectsController(ProjectsService projectsService, DeadlineService deadlineService) {
         this.projectsService = projectsService;
+        this.deadlineService = deadlineService;
     }
 
     @GetMapping("/getAll")
@@ -64,6 +66,22 @@ public class ProjectsController {
         Optional<CountResponse> count = projectsService.count();
         return count.isPresent() ?
                 new ResponseEntity<>(count, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/deadline")
+    public ResponseEntity<Optional<Deadline>> deadline() {
+        Optional<Deadline> deadline = deadlineService.deadline();
+        return deadline.isPresent() ?
+                new ResponseEntity<>(deadline, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/percentage")
+    public ResponseEntity<Optional<List<ProjectsRecord>>> percentage() {
+        Optional<List<ProjectsRecord>> projectsRecordList = projectsService.percentage();
+        return projectsRecordList.isPresent() ?
+                new ResponseEntity<>(projectsRecordList, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

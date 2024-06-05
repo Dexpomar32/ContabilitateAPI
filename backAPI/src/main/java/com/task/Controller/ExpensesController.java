@@ -15,7 +15,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
-@RequestMapping("/expenses")
+@RequestMapping("/api/v1/expenses")
 public class ExpensesController {
     private final ExpensesService expensesService;
 

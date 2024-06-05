@@ -16,7 +16,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
-@RequestMapping("/monthly")
+@RequestMapping("/api/v1/monthly")
 public class MonthlyProfitController {
     private final MonthlyProfitService monthlyProfitService;
 

@@ -15,7 +15,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
-@RequestMapping("/documents")
+@RequestMapping("/api/v1/documents")
 public class DocumentsController {
     private final DocumentsService documentsService;
 

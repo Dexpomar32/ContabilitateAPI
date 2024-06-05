@@ -7,25 +7,30 @@ import com.task.Model.CountResponse;
 import com.task.Model.Projects;
 import com.task.Repository.ClientsRepository;
 import com.task.Repository.ProjectsRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@SuppressWarnings("unchecked")
 public class ProjectsService {
     private final ProjectsRepository projectsRepository;
     private final ProjectsMapper projectsMapper;
     private final ClientsRepository clientsRepository;
+    private final EntityManager entityManager;
 
     @Autowired
-    public ProjectsService(ProjectsRepository projectsRepository, ProjectsMapper projectsMapper, ClientsRepository clientsRepository) {
+    public ProjectsService(ProjectsRepository projectsRepository, ProjectsMapper projectsMapper, ClientsRepository clientsRepository, EntityManager entityManager) {
         this.projectsRepository = projectsRepository;
         this.projectsMapper = projectsMapper;
         this.clientsRepository = clientsRepository;
+        this.entityManager = entityManager;
     }
 
     public Optional<List<ProjectsRecord>> getAll() {
@@ -70,6 +75,7 @@ public class ProjectsService {
                     existingProject.setStartDate(project.getStartDate());
                     existingProject.setEndDate(project.getEndDate());
                     existingProject.setClient(project.getClient());
+                    existingProject.setPercentage(project.getPercentage());
                     projectsRepository.save(existingProject);
                     return projectsMapper.apply(existingProject);
                 });
@@ -89,9 +95,21 @@ public class ProjectsService {
         return Optional.of(new CountResponse(count));
     }
 
+    public Optional<List<ProjectsRecord>> percentage() {
+        List<Projects> results = entityManager.createStoredProcedureQuery("CompletionPercentage", Projects.class)
+                .getResultList();
+
+        List<ProjectsRecord> projectRecords = results.stream()
+                .map(projectsMapper)
+                .collect(Collectors.toList());
+
+        return Optional.of(projectRecords);
+    }
+
+
     public boolean check(Projects project) {
         return Stream.of(project.getCode(), project.getName(), project.getDescription(), project.getStatus(), project.getStartDate(),
-                        project.getEndDate(), project.getClientCode())
+                        project.getEndDate(), project.getClientCode(), project.getPercentage())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 }

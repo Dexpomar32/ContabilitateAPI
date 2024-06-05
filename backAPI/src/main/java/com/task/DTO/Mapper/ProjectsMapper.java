@@ -19,7 +19,8 @@ public class ProjectsMapper implements Function<Projects, ProjectsRecord> {
                 projects.getStatus(),
                 formatDate(projects.getStartDate()),
                 formatDate(projects.getEndDate()),
-                projects.getClient().getCode()
+                projects.getClient().getCode(),
+                projects.getPercentage()
         );
     }
 

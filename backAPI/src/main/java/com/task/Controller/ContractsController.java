@@ -15,7 +15,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
-@RequestMapping("/contracts")
+@RequestMapping("/api/v1/contracts")
 public class ContractsController {
     private final ContractsService contractsService;
 

@@ -34,6 +34,8 @@ public class Projects {
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "client_id")
     private Clients client;
+    @Column(name = "completion_percentage")
+    private Integer percentage;
     @Transient
     private String clientCode;
 }

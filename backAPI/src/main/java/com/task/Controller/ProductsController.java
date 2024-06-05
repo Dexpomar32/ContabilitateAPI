@@ -16,7 +16,7 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 public class ProductsController {
     private final ProductsService productsService;
 

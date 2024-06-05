@@ -29,9 +29,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @SuppressWarnings("unused")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
