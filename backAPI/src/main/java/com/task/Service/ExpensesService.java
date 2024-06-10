@@ -47,6 +47,10 @@ public class ExpensesService {
             return Optional.empty();
         }
 
+        if (expense.getCode() == null || expense.getCode().isEmpty()) {
+            expense.setCode(generateUniqueCode());
+        }
+
         Projects projects = projectsRepository.findByCode(expense.getProjectCode());
         expense.setProject(projects);
         expensesRepository.save(expense);
@@ -82,7 +86,15 @@ public class ExpensesService {
     }
 
     public boolean check(Expenses expense) {
-        return Stream.of(expense.getCode(), expense.getDate(), expense.getAmount(), expense.getDescription(), expense.getProjectCode())
+        return Stream.of(expense.getDate(), expense.getAmount(), expense.getDescription(), expense.getProjectCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (expensesRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

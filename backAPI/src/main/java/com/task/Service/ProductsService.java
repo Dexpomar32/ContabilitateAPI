@@ -44,6 +44,10 @@ public class ProductsService {
             return Optional.empty();
         }
 
+        if (product.getCode() == null || product.getCode().isEmpty()) {
+            product.setCode(generateUniqueCode());
+        }
+
         productsRepository.save(product);
         return Optional.ofNullable(productsMapper.apply(product));
     }
@@ -79,7 +83,15 @@ public class ProductsService {
     }
 
     public boolean check(Products product) {
-        return Stream.of(product.getCode(), product.getName(), product.getDescription(), product.getPrice(), product.getQuantity())
+        return Stream.of(product.getName(), product.getDescription(), product.getPrice(), product.getQuantity())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (productsRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

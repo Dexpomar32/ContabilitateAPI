@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NotesRepository extends JpaRepository<Notes, String> {
     Notes findByCode(@Param("code") String code);
+    boolean existsByCode(String code);
 }

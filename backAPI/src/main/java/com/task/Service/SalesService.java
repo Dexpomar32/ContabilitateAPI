@@ -47,6 +47,10 @@ public class SalesService {
             return Optional.empty();
         }
 
+        if (sale.getCode() == null || sale.getCode().isEmpty()) {
+            sale.setCode(generateUniqueCode());
+        }
+
         Clients clients = clientsRepository.findByCode(sale.getClientCode());
 
         sale.setClient(clients);
@@ -82,7 +86,15 @@ public class SalesService {
     }
 
     public boolean check(Sales sale) {
-        return Stream.of(sale.getCode(), sale.getDate(), sale.getAmount(), sale.getClientCode())
+        return Stream.of(sale.getDate(), sale.getAmount(), sale.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (salesRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

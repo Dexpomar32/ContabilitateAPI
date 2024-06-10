@@ -47,6 +47,10 @@ public class IncomesService {
             return Optional.empty();
         }
 
+        if (incomes.getCode() == null || incomes.getCode().isEmpty()) {
+            incomes.setCode(generateUniqueCode());
+        }
+
         Sales sales = salesRepository.findByCode(incomes.getSaleCode());
         incomes.setSale(sales);
         incomesRepository.save(incomes);
@@ -81,7 +85,15 @@ public class IncomesService {
     }
 
     public boolean check(Incomes incomes) {
-        return Stream.of(incomes.getCode(), incomes.getDate(), incomes.getAmount(), incomes.getSaleCode())
+        return Stream.of(incomes.getDate(), incomes.getAmount(), incomes.getSaleCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (incomesRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

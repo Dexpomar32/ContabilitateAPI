@@ -47,6 +47,10 @@ public class NotesService {
             return Optional.empty();
         }
 
+        if (note.getCode() == null || note.getCode().isEmpty()) {
+            note.setCode(generateUniqueCode());
+        }
+
         Projects projects = projectsRepository.findByCode(note.getProjectCode());
         note.setProject(projects);
         notesRepository.save(note);
@@ -81,7 +85,15 @@ public class NotesService {
     }
 
     public boolean check(Notes note) {
-        return Stream.of(note.getCode(), note.getText(), note.getDate(), note.getProjectCode())
+        return Stream.of(note.getText(), note.getDate(), note.getProjectCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (notesRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

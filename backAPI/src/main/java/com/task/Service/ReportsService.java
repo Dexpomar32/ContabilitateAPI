@@ -47,6 +47,10 @@ public class ReportsService {
             return Optional.empty();
         }
 
+        if (report.getCode() == null || report.getCode().isEmpty()) {
+            report.setCode(generateUniqueCode());
+        }
+
         Projects projects = projectsRepository.findByCode(report.getProjectCode());
         report.setProject(projects);
         reportsRepository.save(report);
@@ -81,7 +85,15 @@ public class ReportsService {
     }
 
     public boolean check(Reports report) {
-        return Stream.of(report.getCode(), report.getDate(), report.getText(), report.getProjectCode())
+        return Stream.of(report.getDate(), report.getText(), report.getProjectCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (reportsRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

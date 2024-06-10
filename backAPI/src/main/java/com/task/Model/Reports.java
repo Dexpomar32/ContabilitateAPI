@@ -19,7 +19,7 @@ public class Reports {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "report_code")
+    @Column(name = "report_code", nullable = false, unique = true)
     private String code;
     @Column(name = "report_date")
     private Date date;

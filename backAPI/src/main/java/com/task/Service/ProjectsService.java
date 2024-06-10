@@ -52,6 +52,10 @@ public class ProjectsService {
             return Optional.empty();
         }
 
+        if (project.getCode() == null || project.getCode().isEmpty()) {
+            project.setCode(generateUniqueCode());
+        }
+
         Clients client = clientsRepository.findByCode(project.getClientCode());
         project.setClient(client);
         projectsRepository.save(project);
@@ -111,8 +115,16 @@ public class ProjectsService {
     }
 
     public boolean check(Projects project) {
-        return Stream.of(project.getCode(), project.getName(), project.getDescription(), project.getStatus(), project.getStartDate(),
+        return Stream.of(project.getName(), project.getDescription(), project.getStatus(), project.getStartDate(),
                         project.getEndDate(), project.getClientCode(), project.getPercentage())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (projectsRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

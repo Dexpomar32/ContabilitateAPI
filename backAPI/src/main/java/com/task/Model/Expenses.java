@@ -19,7 +19,7 @@ public class Expenses {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "expense_code")
+    @Column(name = "expense_code", nullable = false, unique = true)
     private String code;
     @Column(name = "date")
     private Date date;

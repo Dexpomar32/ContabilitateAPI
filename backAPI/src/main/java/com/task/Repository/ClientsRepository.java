@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClientsRepository extends JpaRepository<Clients, String> {
     Clients findByCode(@Param("code") String code);
+    boolean existsByCode(String code);
 }

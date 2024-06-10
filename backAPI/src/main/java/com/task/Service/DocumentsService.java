@@ -47,6 +47,10 @@ public class DocumentsService {
             return Optional.empty();
         }
 
+        if (document.getCode() == null || document.getCode().isEmpty()) {
+            document.setCode(generateUniqueCode());
+        }
+
         Clients client = clientsRepository.findByCode(document.getClientCode());
         document.setClient(client);
         documentsRepository.save(document);
@@ -82,7 +86,15 @@ public class DocumentsService {
     }
 
     public boolean check(Documents document) {
-        return Stream.of(document.getCode(), document.getType(), document.getDate(), document.getText(), document.getClientCode())
+        return Stream.of(document.getType(), document.getDate(), document.getText(), document.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (documentsRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

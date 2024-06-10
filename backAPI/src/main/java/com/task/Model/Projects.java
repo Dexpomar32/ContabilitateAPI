@@ -19,7 +19,7 @@ public class Projects {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "project_code")
+    @Column(name = "project_code", nullable = false, unique = true)
     private String code;
     @Column(name = "project_name")
     private String name;

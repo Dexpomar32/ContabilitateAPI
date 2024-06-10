@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContractsRepository extends JpaRepository<Contracts, String> {
     Contracts findByCode(@Param("code") String code);
+    boolean existsByCode(String code);
 }

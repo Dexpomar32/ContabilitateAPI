@@ -19,7 +19,7 @@ public class Documents {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "document_code")
+    @Column(name = "document_code", nullable = false, unique = true)
     private String code;
     @Column(name = "document_type")
     private String type;

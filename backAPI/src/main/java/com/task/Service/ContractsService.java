@@ -47,6 +47,10 @@ public class ContractsService {
             return Optional.empty();
         }
 
+        if (contract.getCode() == null || contract.getCode().isEmpty()) {
+            contract.setCode(generateUniqueCode());
+        }
+
         Clients client = clientsRepository.findByCode(contract.getClientCode());
         contract.setClient(client);
         contractsRepository.save(contract);
@@ -81,7 +85,15 @@ public class ContractsService {
     }
 
     public boolean check(Contracts contract) {
-        return Stream.of(contract.getCode(), contract.getDate(), contract.getPeriod(), contract.getClientCode())
+        return Stream.of(contract.getDate(), contract.getPeriod(), contract.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (contractsRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

@@ -19,7 +19,7 @@ public class Incomes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "income_code")
+    @Column(name = "income_code", nullable = false, unique = true)
     private String code;
     @Column(name = "sale_date")
     private Date date;

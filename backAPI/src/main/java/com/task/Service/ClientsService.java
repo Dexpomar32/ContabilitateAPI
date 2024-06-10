@@ -44,7 +44,12 @@ public class ClientsService {
             return Optional.empty();
         }
 
+        if (client.getCode() == null || client.getCode().isEmpty()) {
+            client.setCode(generateUniqueCode());
+        }
+
         clientsRepository.save(client);
+        System.out.println(client);
         return Optional.ofNullable(clientsMapper.apply(client));
     }
 
@@ -79,7 +84,15 @@ public class ClientsService {
     }
 
     public boolean check(Clients client) {
-        return Stream.of(client.getCode(), client.getName(), client.getSurname(), client.getEmail(), client.getNumber())
+        return Stream.of(client.getName(), client.getSurname(), client.getEmail(), client.getNumber())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+    }
+
+    private String generateUniqueCode() {
+        String uniqueCode;
+        do {
+            uniqueCode = CodeGenerator.generateCode();
+        } while (clientsRepository.existsByCode(uniqueCode));
+        return uniqueCode;
     }
 }

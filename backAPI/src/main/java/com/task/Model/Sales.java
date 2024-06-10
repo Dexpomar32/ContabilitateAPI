@@ -18,7 +18,7 @@ public class Sales {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "sale_code")
+    @Column(name = "sale_code", nullable = false, unique = true)
     private String code;
     @Column(name = "sale_date")
     private Date date;

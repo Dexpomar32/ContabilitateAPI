@@ -19,7 +19,7 @@ public class Contracts {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "contract_code")
+    @Column(name = "contract_code", nullable = false, unique = true)
     private String code;
     @Column(name = "date")
     private Date date;

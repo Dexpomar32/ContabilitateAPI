@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DocumentsRepository extends JpaRepository<Documents, String> {
     Documents findByCode(@Param("code") String code);
+    boolean existsByCode(String code);
 }

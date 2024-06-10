@@ -19,7 +19,7 @@ public class Notes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NaturalId
-    @Column(name = "note_code")
+    @Column(name = "note_code", nullable = false, unique = true)
     private String code;
     @Column(name = "note_text")
     private String text;
