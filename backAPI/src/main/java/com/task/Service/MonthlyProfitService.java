@@ -1,13 +1,11 @@
 package com.task.Service;
 
-import com.task.Model.Finances;
 import com.task.Model.MonthlyProfit;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,14 +21,15 @@ public class MonthlyProfitService {
     }
 
     public Optional<List<MonthlyProfit>> profit() {
-        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("CalculateMonthlyProfit");
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("GetMonthlyIncome");
         List<Object[]> results = storedProcedureQuery.getResultList();
         List<MonthlyProfit> monthlyProfitList = new ArrayList<>();
 
         for (Object[] result : results) {
-            BigDecimal currentMonthIncome = (BigDecimal) result[0];
-            BigDecimal previousMonthIncome = (BigDecimal) result[1];
-            MonthlyProfit monthlyProfit = new MonthlyProfit(currentMonthIncome, previousMonthIncome);
+            Integer day = (Integer) result[0];
+            Double previousMonthIncome = (Double) result[1];
+            Double currentMonthIncome = (Double) result[2];
+            MonthlyProfit monthlyProfit = new MonthlyProfit(day, previousMonthIncome, currentMonthIncome);
             monthlyProfitList.add(monthlyProfit);
         }
 
