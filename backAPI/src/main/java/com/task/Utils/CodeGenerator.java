@@ -1,4 +1,4 @@
-package com.task.Service;
+package com.task.Utils;
 
 import java.security.SecureRandom;
 

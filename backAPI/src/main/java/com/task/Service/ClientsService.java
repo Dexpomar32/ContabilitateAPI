@@ -5,6 +5,8 @@ import com.task.Repository.ClientsRepository;
 import com.task.DTO.Mapper.ClientsMapper;
 import com.task.DTO.Records.ClientsRecord;
 import com.task.Model.Clients;
+import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,16 +56,9 @@ public class ClientsService {
     }
 
     public Optional<ClientsRecord> update(Clients client) {
-        if (check(client)) {
-            return Optional.empty();
-        }
-
         return Optional.ofNullable(clientsRepository.findByCode(client.getCode()))
                 .map(existingClient -> {
-                    existingClient.setName(client.getName());
-                    existingClient.setSurname(client.getSurname());
-                    existingClient.setEmail(client.getEmail());
-                    existingClient.setNumber(client.getNumber());
+                    NullAwareBeanUtils.copyNonNullProperties(client, existingClient);
                     clientsRepository.save(existingClient);
                     return clientsMapper.apply(existingClient);
                 });

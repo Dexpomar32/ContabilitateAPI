@@ -6,6 +6,7 @@ import com.task.Model.Incomes;
 import com.task.Model.Sales;
 import com.task.Repository.IncomesRepository;
 import com.task.Repository.SalesRepository;
+import com.task.Utils.CodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

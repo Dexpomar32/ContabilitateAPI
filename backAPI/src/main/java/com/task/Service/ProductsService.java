@@ -5,6 +5,7 @@ import com.task.DTO.Records.ProductsRecord;
 import com.task.Model.CountResponse;
 import com.task.Model.Products;
 import com.task.Repository.ProductsRepository;
+import com.task.Utils.CodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
