@@ -7,6 +7,7 @@ import com.task.Model.Projects;
 import com.task.Repository.NotesRepository;
 import com.task.Repository.ProjectsRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,18 +60,12 @@ public class NotesService {
     }
 
     public Optional<NotesRecord> update(Notes note) {
-        if (check(note)) {
-            return Optional.empty();
-        }
-
         Projects projects = projectsRepository.findByCode(note.getProjectCode());
         note.setProject(projects);
 
         return Optional.ofNullable(notesRepository.findByCode(note.getCode()))
                 .map(existingNote -> {
-                    existingNote.setText(note.getText());
-                    existingNote.setDate(note.getDate());
-                    existingNote.setProject(note.getProject());
+                    NullAwareBeanUtils.copyNonNullProperties(note, existingNote);
                     notesRepository.save(existingNote);
                     return notesMapper.apply(existingNote);
                 });

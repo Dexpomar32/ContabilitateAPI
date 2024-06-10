@@ -7,6 +7,7 @@ import com.task.Model.Sales;
 import com.task.Repository.IncomesRepository;
 import com.task.Repository.SalesRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,21 +59,15 @@ public class IncomesService {
         return Optional.ofNullable(incomesMapper.apply(incomes));
     }
 
-    public Optional<IncomesRecord> update(Incomes incomes) {
-        if (check(incomes)) {
-            return Optional.empty();
-        }
+    public Optional<IncomesRecord> update(Incomes income) {
+        Sales sales = salesRepository.findByCode(income.getSaleCode());
+        income.setSale(sales);
 
-        Sales sales = salesRepository.findByCode(incomes.getSaleCode());
-        incomes.setSale(sales);
-
-        return Optional.ofNullable(incomesRepository.findByCode(incomes.getCode()))
-                .map(ExistingIncome -> {
-                    ExistingIncome.setDate(incomes.getDate());
-                    ExistingIncome.setAmount(incomes.getAmount());
-                    ExistingIncome.setSale(incomes.getSale());
-                    incomesRepository.save(ExistingIncome);
-                    return incomesMapper.apply(ExistingIncome);
+        return Optional.ofNullable(incomesRepository.findByCode(income.getCode()))
+                .map(existingIncome -> {
+                    NullAwareBeanUtils.copyNonNullProperties(income, existingIncome);
+                    incomesRepository.save(existingIncome);
+                    return incomesMapper.apply(existingIncome);
                 });
     }
 

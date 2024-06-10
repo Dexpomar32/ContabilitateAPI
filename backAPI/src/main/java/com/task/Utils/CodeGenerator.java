@@ -10,4 +10,3 @@ public class CodeGenerator {
         return prefix + randomNumber;
     }
 }
-

@@ -6,6 +6,7 @@ import com.task.Model.*;
 import com.task.Repository.ClientsRepository;
 import com.task.Repository.ProjectsRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,22 +65,12 @@ public class ProjectsService {
     }
 
     public Optional<ProjectsRecord> update(Projects project) {
-        if (check(project)) {
-            return Optional.empty();
-        }
-
         Clients client = clientsRepository.findByCode(project.getClientCode());
         project.setClient(client);
 
         return Optional.ofNullable(projectsRepository.findByCode(project.getCode()))
                 .map(existingProject -> {
-                    existingProject.setName(project.getName());
-                    existingProject.setDescription(project.getDescription());
-                    existingProject.setStatus(project.getStatus());
-                    existingProject.setStartDate(project.getStartDate());
-                    existingProject.setEndDate(project.getEndDate());
-                    existingProject.setClient(project.getClient());
-                    existingProject.setPercentage(project.getPercentage());
+                    NullAwareBeanUtils.copyNonNullProperties(project, existingProject);
                     projectsRepository.save(existingProject);
                     return projectsMapper.apply(existingProject);
                 });

@@ -62,6 +62,14 @@ public class ProjectsController {
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Optional<ProjectsRecord>> delete(@RequestParam String code) {
+        Optional<ProjectsRecord> projectsRecord = projectsService.delete(code);
+        return projectsRecord.isPresent() ?
+                new ResponseEntity<>(projectsRecord, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Optional<CountResponse>> getCount() {
         Optional<CountResponse> count = projectsService.count();

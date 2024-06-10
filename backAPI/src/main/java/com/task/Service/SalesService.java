@@ -7,6 +7,7 @@ import com.task.Model.Sales;
 import com.task.Repository.ClientsRepository;
 import com.task.Repository.SalesRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,18 +61,12 @@ public class SalesService {
     }
 
     public Optional<SalesRecord> update(Sales sale) {
-        if (check(sale)) {
-            return Optional.empty();
-        }
-
         Clients clients = clientsRepository.findByCode(sale.getClientCode());
         sale.setClient(clients);
 
         return Optional.ofNullable(salesRepository.findByCode(sale.getCode()))
                 .map(existingSale -> {
-                    existingSale.setDate(sale.getDate());
-                    existingSale.setAmount(sale.getAmount());
-                    existingSale.setClient(sale.getClient());
+                    NullAwareBeanUtils.copyNonNullProperties(sale, existingSale);
                     salesRepository.save(existingSale);
                     return salesMapper.apply(existingSale);
                 });

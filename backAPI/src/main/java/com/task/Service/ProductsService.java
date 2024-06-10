@@ -6,6 +6,7 @@ import com.task.Model.CountResponse;
 import com.task.Model.Products;
 import com.task.Repository.ProductsRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,16 +55,9 @@ public class ProductsService {
     }
 
     public Optional<ProductsRecord> update(Products product) {
-        if (check(product)) {
-            return Optional.empty();
-        }
-
         return Optional.ofNullable(productsRepository.findByCode(product.getCode()))
                 .map(existingProduct -> {
-                    existingProduct.setName(product.getName());
-                    existingProduct.setDescription(product.getDescription());
-                    existingProduct.setPrice(product.getPrice());
-                    existingProduct.setQuantity(product.getQuantity());
+                    NullAwareBeanUtils.copyNonNullProperties(product, existingProduct);
                     productsRepository.save(existingProduct);
                     return productsMapper.apply(existingProduct);
                 });

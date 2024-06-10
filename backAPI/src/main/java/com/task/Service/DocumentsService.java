@@ -7,6 +7,7 @@ import com.task.Model.Documents;
 import com.task.Repository.ClientsRepository;
 import com.task.Repository.DocumentsRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,19 +60,12 @@ public class DocumentsService {
     }
 
     public Optional<DocumentsRecord> update(Documents document) {
-        if (check(document)) {
-            return Optional.empty();
-        }
-
         Clients client = clientsRepository.findByCode(document.getClientCode());
         document.setClient(client);
 
         return Optional.ofNullable(documentsRepository.findByCode(document.getCode()))
                 .map(existingDocument -> {
-                    existingDocument.setType(document.getType());
-                    existingDocument.setDate(document.getDate());
-                    existingDocument.setText(document.getText());
-                    existingDocument.setClient(document.getClient());
+                    NullAwareBeanUtils.copyNonNullProperties(document, existingDocument);
                     documentsRepository.save(existingDocument);
                     return documentsMapper.apply(existingDocument);
                 });

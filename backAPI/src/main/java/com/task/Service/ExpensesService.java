@@ -7,6 +7,7 @@ import com.task.Model.Projects;
 import com.task.Repository.ExpensesRepository;
 import com.task.Repository.ProjectsRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,19 +60,12 @@ public class ExpensesService {
     }
 
     public Optional<ExpensesRecord> update(Expenses expense) {
-        if (check(expense)) {
-            return Optional.empty();
-        }
-
         Projects projects = projectsRepository.findByCode(expense.getProjectCode());
         expense.setProject(projects);
 
         return Optional.ofNullable(expensesRepository.findByCode(expense.getCode()))
                 .map(existingExpense -> {
-                    existingExpense.setDate(expense.getDate());
-                    existingExpense.setAmount(expense.getAmount());
-                    existingExpense.setDescription(expense.getDescription());
-                    existingExpense.setProject(expense.getProject());
+                    NullAwareBeanUtils.copyNonNullProperties(expense, existingExpense);
                     expensesRepository.save(existingExpense);
                     return expensesMapper.apply(existingExpense);
                 });

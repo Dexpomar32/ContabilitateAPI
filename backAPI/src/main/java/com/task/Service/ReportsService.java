@@ -7,6 +7,7 @@ import com.task.Model.Reports;
 import com.task.Repository.ProjectsRepository;
 import com.task.Repository.ReportsRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,18 +60,12 @@ public class ReportsService {
     }
 
     public Optional<ReportsRecord> update(Reports report) {
-        if (check(report)) {
-            return Optional.empty();
-        }
-
         Projects projects = projectsRepository.findByCode(report.getProjectCode());
         report.setProject(projects);
 
         return Optional.ofNullable(reportsRepository.findByCode(report.getCode()))
                 .map(existingReport -> {
-                    existingReport.setDate(report.getDate());
-                    existingReport.setText(report.getText());
-                    existingReport.setProject(report.getProject());
+                    NullAwareBeanUtils.copyNonNullProperties(report, existingReport);
                     reportsRepository.save(existingReport);
                     return reportsMapper.apply(existingReport);
                 });

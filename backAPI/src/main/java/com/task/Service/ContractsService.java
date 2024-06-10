@@ -7,6 +7,7 @@ import com.task.Model.Contracts;
 import com.task.Repository.ClientsRepository;
 import com.task.Repository.ContractsRepository;
 import com.task.Utils.CodeGenerator;
+import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,18 +60,12 @@ public class ContractsService {
     }
 
     public Optional<ContractsRecord> update(Contracts contract) {
-        if (check(contract)) {
-            return Optional.empty();
-        }
-
         Clients client = clientsRepository.findByCode(contract.getClientCode());
         contract.setClient(client);
 
         return Optional.ofNullable(contractsRepository.findByCode(contract.getCode()))
                 .map(existingContract -> {
-                    existingContract.setDate(contract.getDate());
-                    existingContract.setPeriod(contract.getPeriod());
-                    existingContract.setClient(contract.getClient());
+                    NullAwareBeanUtils.copyNonNullProperties(contract, existingContract);
                     contractsRepository.save(existingContract);
                     return contractsMapper.apply(existingContract);
                 });
