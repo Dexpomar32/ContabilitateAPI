@@ -60,8 +60,10 @@ public class ContractsService {
     }
 
     public Optional<ContractsRecord> update(Contracts contract) {
-        Clients client = clientsRepository.findByCode(contract.getClientCode());
-        contract.setClient(client);
+        if (contract.getClientCode() != null && !contract.getClientCode().isEmpty()) {
+            Clients client = clientsRepository.findByCode(contract.getClientCode());
+            contract.setClient(client);
+        }
 
         return Optional.ofNullable(contractsRepository.findByCode(contract.getCode()))
                 .map(existingContract -> {

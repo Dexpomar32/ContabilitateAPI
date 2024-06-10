@@ -60,8 +60,10 @@ public class ReportsService {
     }
 
     public Optional<ReportsRecord> update(Reports report) {
-        Projects projects = projectsRepository.findByCode(report.getProjectCode());
-        report.setProject(projects);
+        if (report.getProjectCode() != null && !report.getProjectCode().isEmpty()) {
+            Projects projects = projectsRepository.findByCode(report.getProjectCode());
+            report.setProject(projects);
+        }
 
         return Optional.ofNullable(reportsRepository.findByCode(report.getCode()))
                 .map(existingReport -> {

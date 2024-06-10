@@ -61,8 +61,10 @@ public class SalesService {
     }
 
     public Optional<SalesRecord> update(Sales sale) {
-        Clients clients = clientsRepository.findByCode(sale.getClientCode());
-        sale.setClient(clients);
+        if (sale.getClientCode() != null && !sale.getClientCode().isEmpty()) {
+            Clients clients = clientsRepository.findByCode(sale.getClientCode());
+            sale.setClient(clients);
+        }
 
         return Optional.ofNullable(salesRepository.findByCode(sale.getCode()))
                 .map(existingSale -> {

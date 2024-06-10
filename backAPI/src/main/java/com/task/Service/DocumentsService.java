@@ -60,8 +60,10 @@ public class DocumentsService {
     }
 
     public Optional<DocumentsRecord> update(Documents document) {
-        Clients client = clientsRepository.findByCode(document.getClientCode());
-        document.setClient(client);
+        if (document.getClientCode() != null && !document.getClientCode().isEmpty()) {
+            Clients client = clientsRepository.findByCode(document.getClientCode());
+            document.setClient(client);
+        }
 
         return Optional.ofNullable(documentsRepository.findByCode(document.getCode()))
                 .map(existingDocument -> {

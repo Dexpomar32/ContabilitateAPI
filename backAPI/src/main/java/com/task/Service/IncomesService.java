@@ -60,8 +60,10 @@ public class IncomesService {
     }
 
     public Optional<IncomesRecord> update(Incomes income) {
-        Sales sales = salesRepository.findByCode(income.getSaleCode());
-        income.setSale(sales);
+        if (income.getSaleCode() != null && !income.getSaleCode().isEmpty()) {
+            Sales sales = salesRepository.findByCode(income.getSaleCode());
+            income.setSale(sales);
+        }
 
         return Optional.ofNullable(incomesRepository.findByCode(income.getCode()))
                 .map(existingIncome -> {

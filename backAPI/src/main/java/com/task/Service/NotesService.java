@@ -60,8 +60,10 @@ public class NotesService {
     }
 
     public Optional<NotesRecord> update(Notes note) {
-        Projects projects = projectsRepository.findByCode(note.getProjectCode());
-        note.setProject(projects);
+        if (note.getProjectCode() != null && !note.getProjectCode().isEmpty()) {
+            Projects projects = projectsRepository.findByCode(note.getProjectCode());
+            note.setProject(projects);
+        }
 
         return Optional.ofNullable(notesRepository.findByCode(note.getCode()))
                 .map(existingNote -> {

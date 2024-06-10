@@ -60,8 +60,10 @@ public class ExpensesService {
     }
 
     public Optional<ExpensesRecord> update(Expenses expense) {
-        Projects projects = projectsRepository.findByCode(expense.getProjectCode());
-        expense.setProject(projects);
+        if (expense.getProjectCode() != null && !expense.getProjectCode().isEmpty()) {
+            Projects projects = projectsRepository.findByCode(expense.getProjectCode());
+            expense.setProject(projects);
+        }
 
         return Optional.ofNullable(expensesRepository.findByCode(expense.getCode()))
                 .map(existingExpense -> {
