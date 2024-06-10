@@ -91,7 +91,7 @@ public class ProductsService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("PRD");
         } while (productsRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

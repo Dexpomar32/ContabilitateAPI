@@ -93,7 +93,7 @@ public class ContractsService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("CO");
         } while (contractsRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

@@ -86,7 +86,7 @@ public class ClientsService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("CL");
         } while (clientsRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

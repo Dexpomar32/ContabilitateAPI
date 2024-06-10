@@ -93,7 +93,7 @@ public class IncomesService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("IN");
         } while (incomesRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

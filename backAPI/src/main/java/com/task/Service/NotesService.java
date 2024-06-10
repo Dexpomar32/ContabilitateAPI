@@ -93,7 +93,7 @@ public class NotesService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("NO");
         } while (notesRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

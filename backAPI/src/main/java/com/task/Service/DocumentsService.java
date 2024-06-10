@@ -94,7 +94,7 @@ public class DocumentsService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("DO");
         } while (documentsRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

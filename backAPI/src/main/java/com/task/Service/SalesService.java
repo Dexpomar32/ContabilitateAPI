@@ -94,7 +94,7 @@ public class SalesService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("SA");
         } while (salesRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

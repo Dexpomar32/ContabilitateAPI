@@ -26,5 +26,5 @@ public class Clients {
     @Column(name = "email")
     private String email;
     @Column(name = "phone_number")
-    private Integer number;
+    private Long number;
 }

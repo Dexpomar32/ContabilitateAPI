@@ -124,7 +124,7 @@ public class ProjectsService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("PRJ");
         } while (projectsRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

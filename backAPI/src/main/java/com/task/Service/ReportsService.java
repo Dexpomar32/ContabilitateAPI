@@ -93,7 +93,7 @@ public class ReportsService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("RE");
         } while (reportsRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

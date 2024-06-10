@@ -94,7 +94,7 @@ public class ExpensesService {
     private String generateUniqueCode() {
         String uniqueCode;
         do {
-            uniqueCode = CodeGenerator.generateCode();
+            uniqueCode = CodeGenerator.generateCode("EX");
         } while (expensesRepository.existsByCode(uniqueCode));
         return uniqueCode;
     }

@@ -5,5 +5,5 @@ public record ClientsRecord(
         String name,
         String surname,
         String email,
-        Integer number
+        Long number
 ) {}
