@@ -65,8 +65,10 @@ public class ProjectsService {
     }
 
     public Optional<ProjectsRecord> update(Projects project) {
-        Clients client = clientsRepository.findByCode(project.getClientCode());
-        project.setClient(client);
+        if (project.getClientCode() != null && !project.getClientCode().isEmpty()) {
+            Clients client = clientsRepository.findByCode(project.getClientCode());
+            project.setClient(client);
+        }
 
         return Optional.ofNullable(projectsRepository.findByCode(project.getCode()))
                 .map(existingProject -> {
