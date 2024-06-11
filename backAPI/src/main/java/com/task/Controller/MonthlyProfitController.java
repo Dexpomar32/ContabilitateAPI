@@ -1,7 +1,8 @@
 package com.task.Controller;
 
-import com.task.Model.MonthlyProfit;
-import com.task.Service.MonthlyProfitService;
+import com.task.Model.MonthlyExpenses;
+import com.task.Model.MonthlyIncomes;
+import com.task.Service.MonthlyFinancesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +19,26 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/monthly")
 public class MonthlyProfitController {
-    private final MonthlyProfitService monthlyProfitService;
+    private final MonthlyFinancesService monthlyProfitService;
 
     @Autowired
-    public MonthlyProfitController(MonthlyProfitService monthlyProfitService) {
+    public MonthlyProfitController(MonthlyFinancesService monthlyProfitService) {
         this.monthlyProfitService = monthlyProfitService;
     }
 
-    @GetMapping("/profit")
-    public ResponseEntity<Optional<List<MonthlyProfit>>> profit() {
-        Optional<List<MonthlyProfit>> optionalMonthlyProfitList = monthlyProfitService.profit();
-        return optionalMonthlyProfitList.isPresent() ?
-                new ResponseEntity<>(optionalMonthlyProfitList, HttpStatus.OK) :
+    @GetMapping("/income")
+    public ResponseEntity<Optional<List<MonthlyIncomes>>> incomes() {
+        Optional<List<MonthlyIncomes>> optionalMonthlyIncomesList = monthlyProfitService.incomes();
+        return optionalMonthlyIncomesList.isPresent() ?
+                new ResponseEntity<>(optionalMonthlyIncomesList, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/expenses")
+    public ResponseEntity<Optional<List<MonthlyExpenses>>> expenses() {
+        Optional<List<MonthlyExpenses>> optionalMonthlyExpensesList = monthlyProfitService.expenses();
+        return optionalMonthlyExpensesList.isPresent() ?
+                new ResponseEntity<>(optionalMonthlyExpensesList, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

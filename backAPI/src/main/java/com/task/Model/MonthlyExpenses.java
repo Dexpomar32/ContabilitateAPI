@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MonthlyProfit {
+public class MonthlyExpenses {
     private Integer day;
-    private Double previousMonthIncome;
-    private Double currentMonthIncome;
+    private Double previousMonthExpense;
+    private Double currentMonthExpense;
 }
