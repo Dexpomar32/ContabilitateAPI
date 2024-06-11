@@ -27,7 +27,7 @@ public class IncomesFacture {
         this.incomesRepository = incomesRepository;
     }
 
-    public void generate(String code)  throws FileNotFoundException {
+    public void generate(String code) throws FileNotFoundException {
         Incomes incomes = incomesRepository.findByCode(code);
         Sales sale = incomes.getSale();
         Products product = sale.getProduct();

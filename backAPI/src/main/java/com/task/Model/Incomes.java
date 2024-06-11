@@ -25,7 +25,7 @@ public class Incomes {
     private Date date;
     @Column(name = "amount")
     private Double amount;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sale_id")
     private Sales sale;
     @Transient

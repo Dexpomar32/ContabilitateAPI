@@ -24,10 +24,10 @@ public class Sales {
     private Date date;
     @Column(name = "amount")
     private Integer amount;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Clients client;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_id")
     private Products product;
     @Transient

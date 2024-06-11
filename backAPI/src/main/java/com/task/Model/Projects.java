@@ -31,7 +31,7 @@ public class Projects {
     private Date startDate;
     @Column(name = "end_date")
     private Date endDate;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Clients client;
     @Column(name = "completion_percentage")
