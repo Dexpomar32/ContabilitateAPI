@@ -25,6 +25,8 @@ public class Contracts {
     private Date date;
     @Column(name = "validity_period")
     private Date period;
+    @Column(name = "valid")
+    private Boolean isValid;
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Clients client;

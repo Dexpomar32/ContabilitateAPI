@@ -4,5 +4,6 @@ public record ContractsRecord(
         String code,
         String date,
         String period,
-        String clientCode
+        String clientCode,
+        Boolean isValid
 ) {}

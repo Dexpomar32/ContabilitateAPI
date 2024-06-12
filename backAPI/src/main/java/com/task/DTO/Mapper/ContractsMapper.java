@@ -16,7 +16,8 @@ public class ContractsMapper implements Function<Contracts, ContractsRecord> {
                 contracts.getCode(),
                 formatDate(contracts.getDate()),
                 formatDate(contracts.getPeriod()),
-                contracts.getClient().getCode()
+                contracts.getClient().getCode(),
+                contracts.getIsValid()
         );
     }
 

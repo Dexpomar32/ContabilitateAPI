@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,17 +27,17 @@ public class MonthlyProfitController {
         this.monthlyProfitService = monthlyProfitService;
     }
 
-    @GetMapping("/income")
-    public ResponseEntity<Optional<List<MonthlyIncomes>>> incomes() {
-        Optional<List<MonthlyIncomes>> optionalMonthlyIncomesList = monthlyProfitService.incomes();
+    @GetMapping("/incomes")
+    public ResponseEntity<Optional<List<MonthlyIncomes>>> incomes(@RequestParam Integer month, @RequestParam Integer year) {
+        Optional<List<MonthlyIncomes>> optionalMonthlyIncomesList = monthlyProfitService.incomes(month, year);
         return optionalMonthlyIncomesList.isPresent() ?
                 new ResponseEntity<>(optionalMonthlyIncomesList, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/expenses")
-    public ResponseEntity<Optional<List<MonthlyExpenses>>> expenses() {
-        Optional<List<MonthlyExpenses>> optionalMonthlyExpensesList = monthlyProfitService.expenses();
+    public ResponseEntity<Optional<List<MonthlyExpenses>>> expenses(@RequestParam Integer month, @RequestParam Integer year) {
+        Optional<List<MonthlyExpenses>> optionalMonthlyExpensesList = monthlyProfitService.expenses(month, year);
         return optionalMonthlyExpensesList.isPresent() ?
                 new ResponseEntity<>(optionalMonthlyExpensesList, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -83,7 +83,7 @@ public class ContractsService {
     }
 
     public boolean check(Contracts contract) {
-        return Stream.of(contract.getDate(), contract.getPeriod(), contract.getClientCode())
+        return Stream.of(contract.getDate(), contract.getPeriod(), contract.getClientCode(), contract.getIsValid())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 

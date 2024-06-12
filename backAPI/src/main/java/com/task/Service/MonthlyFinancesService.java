@@ -3,6 +3,7 @@ package com.task.Service;
 import com.task.Model.MonthlyExpenses;
 import com.task.Model.MonthlyIncomes;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,20 @@ public class MonthlyFinancesService {
         this.entityManager = entityManager;
     }
 
-    public Optional<List<MonthlyIncomes>> incomes() {
+    public Optional<List<MonthlyIncomes>> incomes(int month, int year) {
         StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("GetMonthlyIncome");
+
+        storedProcedureQuery.registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter(2, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(1, month);
+        storedProcedureQuery.setParameter(2, year);
+
+        List<MonthlyIncomes> monthlyProfitList = getMonthlyIncomes(storedProcedureQuery);
+
+        return Optional.of(monthlyProfitList);
+    }
+
+    private static List<MonthlyIncomes> getMonthlyIncomes(StoredProcedureQuery storedProcedureQuery) {
         List<Object[]> results = storedProcedureQuery.getResultList();
         List<MonthlyIncomes> monthlyProfitList = new ArrayList<>();
 
@@ -33,23 +46,33 @@ public class MonthlyFinancesService {
             MonthlyIncomes monthlyProfit = new MonthlyIncomes(day, previousMonthIncome, currentMonthIncome);
             monthlyProfitList.add(monthlyProfit);
         }
-
-        return Optional.of(monthlyProfitList);
+        return monthlyProfitList;
     }
 
-    public Optional<List<MonthlyExpenses>> expenses() {
+    public Optional<List<MonthlyExpenses>> expenses(int month, int year) {
         StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("GetMonthlyExpenses");
+
+        storedProcedureQuery.registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter(2, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(1, month);
+        storedProcedureQuery.setParameter(2, year);
+
+        List<MonthlyExpenses> monthlyExpenseList = getMonthlyExpenses(storedProcedureQuery);
+
+        return Optional.of(monthlyExpenseList);
+    }
+
+    private static List<MonthlyExpenses> getMonthlyExpenses(StoredProcedureQuery storedProcedureQuery) {
         List<Object[]> results = storedProcedureQuery.getResultList();
-        List<MonthlyExpenses> monthlyProfitList = new ArrayList<>();
+        List<MonthlyExpenses> monthlyExpenseList = new ArrayList<>();
 
         for (Object[] result : results) {
             Integer day = (Integer) result[0];
             Double previousMonthExpense = (Double) result[1];
             Double currentMonthExpense = (Double) result[2];
             MonthlyExpenses monthlyExpenses = new MonthlyExpenses(day, previousMonthExpense, currentMonthExpense);
-            monthlyProfitList.add(monthlyExpenses);
+            monthlyExpenseList.add(monthlyExpenses);
         }
-
-        return Optional.of(monthlyProfitList);
+        return monthlyExpenseList;
     }
 }
