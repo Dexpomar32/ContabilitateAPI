@@ -1,5 +1,6 @@
 package com.task.Service;
 
+import com.task.Model.Contracts;
 import com.task.Model.CountResponse;
 import com.task.Repository.ClientsRepository;
 import com.task.DTO.Mapper.ClientsMapper;
@@ -10,6 +11,8 @@ import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,11 +22,13 @@ import java.util.stream.Stream;
 public class ClientsService {
     private final ClientsRepository clientsRepository;
     private final ClientsMapper clientsMapper;
+    private final ContractsService contractsService;
 
     @Autowired
-    public ClientsService(ClientsRepository clientsRepository, ClientsMapper clientsMapper) {
+    public ClientsService(ClientsRepository clientsRepository, ClientsMapper clientsMapper, ContractsService contractsService) {
         this.clientsRepository = clientsRepository;
         this.clientsMapper = clientsMapper;
+        this.contractsService = contractsService;
     }
 
     public Optional<List<ClientsRecord>> getAll() {
@@ -50,8 +55,13 @@ public class ClientsService {
             client.setCode(generateUniqueCode());
         }
 
+        Contracts contract = new Contracts();
+        contract.setClient(client);
+        contract.setDate(Date.valueOf(LocalDate.now()));
+        contract.setPeriod(Date.valueOf(LocalDate.now().plusMonths(5)));
+        contract.setIsValid(true);
         clientsRepository.save(client);
-        System.out.println(client);
+        contractsService.create(contract);
         return Optional.ofNullable(clientsMapper.apply(client));
     }
 

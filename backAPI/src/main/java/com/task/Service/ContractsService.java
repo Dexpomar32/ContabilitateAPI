@@ -53,7 +53,8 @@ public class ContractsService {
             contract.setCode(generateUniqueCode());
         }
 
-        Clients client = clientsRepository.findByCode(contract.getClientCode());
+        System.out.println(contract);
+        Clients client = clientsRepository.findByCode(contract.getClient().getCode());
         contract.setClient(client);
         contractsRepository.save(contract);
         return Optional.ofNullable(contractsMapper.apply(contract));
@@ -82,9 +83,20 @@ public class ContractsService {
         });
     }
 
+    public Boolean findByClientCode(String code) {
+        Optional<ContractsRecord> contractsRecord = Optional.ofNullable(contractsRepository.findByClientCode(code))
+                .map(contractsMapper);
+
+        Contracts contracts = new Contracts();
+        contractsRecord.ifPresent(record -> contracts.setIsValid(!record.isValid()));
+        contractsRecord.ifPresent(record -> contracts.setCode(record.code()));
+        update(contracts);
+        return contracts.getIsValid();
+    }
+
     public boolean check(Contracts contract) {
-        return Stream.of(contract.getDate(), contract.getPeriod(), contract.getClientCode(), contract.getIsValid())
-                .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+        return Stream.of(contract.getDate(), contract.getPeriod(), contract.getIsValid())
+                .anyMatch(Objects::isNull);
     }
 
     private String generateUniqueCode() {

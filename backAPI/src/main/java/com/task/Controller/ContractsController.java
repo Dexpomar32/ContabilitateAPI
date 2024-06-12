@@ -63,4 +63,12 @@ public class ContractsController {
                 new ResponseEntity<>(contractsRecord, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/switch")
+    public ResponseEntity<String> switchAccount(@RequestParam String code) {
+        Boolean contractsRecord = contractsService.findByClientCode(code);
+        return contractsRecord ?
+                ResponseEntity.ok("Switched to active") :
+                ResponseEntity.ok("Switched to not active");
+    }
 }
