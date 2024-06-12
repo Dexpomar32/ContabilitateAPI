@@ -71,4 +71,12 @@ public class ContractsController {
                 ResponseEntity.ok("Switched to active") :
                 ResponseEntity.ok("Switched to not active");
     }
+
+    @GetMapping("/check")
+    public ResponseEntity<String> checkAccount(@RequestParam String code) {
+        Boolean contractsRecord = contractsService.isActive(code);
+        return contractsRecord ?
+                ResponseEntity.ok("Active client") :
+                ResponseEntity.ok("Inactive client");
+    }
 }

@@ -94,6 +94,14 @@ public class ContractsService {
         return contracts.getIsValid();
     }
 
+    public Boolean isActive(String code) {
+        Optional<ContractsRecord> contractsRecord = Optional.ofNullable(contractsRepository.findByClientCode(code))
+                .map(contractsMapper);
+        if (contractsRecord.isPresent()) {
+            return contractsRecord.get().isValid();
+        } else return false;
+    }
+
     public boolean check(Contracts contract) {
         return Stream.of(contract.getDate(), contract.getPeriod(), contract.getIsValid())
                 .anyMatch(Objects::isNull);
