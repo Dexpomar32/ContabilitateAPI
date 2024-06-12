@@ -2,6 +2,7 @@ package com.task.Service;
 
 import com.task.Model.MonthlyExpenses;
 import com.task.Model.MonthlyIncomes;
+import com.task.Model.MonthlySummary;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
@@ -72,6 +73,32 @@ public class MonthlyFinancesService {
             Double currentMonthExpense = (Double) result[2];
             MonthlyExpenses monthlyExpenses = new MonthlyExpenses(day, previousMonthExpense, currentMonthExpense);
             monthlyExpenseList.add(monthlyExpenses);
+        }
+        return monthlyExpenseList;
+    }
+
+    public Optional<List<MonthlySummary>> summary(int month, int year) {
+        StoredProcedureQuery storedProcedureQuery = entityManager.createStoredProcedureQuery("GetMonthlySummary");
+
+        storedProcedureQuery.registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.registerStoredProcedureParameter(2, Integer.class, ParameterMode.IN);
+        storedProcedureQuery.setParameter(1, month);
+        storedProcedureQuery.setParameter(2, year);
+
+        List<MonthlySummary> monthlySummaryList = getMonthlySummary(storedProcedureQuery);
+
+        return Optional.of(monthlySummaryList);
+    }
+
+    private static List<MonthlySummary> getMonthlySummary(StoredProcedureQuery storedProcedureQuery) {
+        List<Object[]> results = storedProcedureQuery.getResultList();
+        List<MonthlySummary> monthlyExpenseList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            Double monthIncome = (Double) result[0];
+            Double monthExpense = (Double) result[1];
+            MonthlySummary monthlySummary = new MonthlySummary(monthIncome, monthExpense);
+            monthlyExpenseList.add(monthlySummary);
         }
         return monthlyExpenseList;
     }
