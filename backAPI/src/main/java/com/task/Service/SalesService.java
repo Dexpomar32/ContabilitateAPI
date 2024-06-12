@@ -83,6 +83,16 @@ public class SalesService {
         });
     }
 
+    public Optional<List<SalesRecord>> history(String code) {
+        List<SalesRecord> reportsRecordList = salesRepository
+                .history(code)
+                .stream()
+                .map(salesMapper)
+                .toList();
+
+        return Optional.of(reportsRecordList);
+    }
+
     public boolean check(Sales sale) {
         return Stream.of(sale.getDate(), sale.getAmount(), sale.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));

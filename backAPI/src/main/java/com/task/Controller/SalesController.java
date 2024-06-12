@@ -63,4 +63,12 @@ public class SalesController {
                 new ResponseEntity<>(salesRecord, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/history")
+    public ResponseEntity<Optional<List<SalesRecord>>> history(@RequestParam String code) {
+        Optional<List<SalesRecord>> salesRecordList = salesService.history(code);
+        return salesRecordList.isPresent() ?
+                new ResponseEntity<>(salesRecordList, HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

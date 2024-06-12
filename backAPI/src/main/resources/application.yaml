@@ -9,6 +9,17 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  mail:
+    host: smtp.beget.com
+    port: 2525
+    username: atg.company@keban.xyz
+    password: mi6&Y6NNG70q
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   port: 8081
 authentication:
