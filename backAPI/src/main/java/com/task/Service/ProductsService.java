@@ -78,7 +78,7 @@ public class ProductsService {
     }
 
     public boolean check(Products product) {
-        return Stream.of(product.getName(), product.getDescription(), product.getPrice(), product.getQuantity())
+        return Stream.of(product.getName(), product.getDescription(), product.getPrice())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 

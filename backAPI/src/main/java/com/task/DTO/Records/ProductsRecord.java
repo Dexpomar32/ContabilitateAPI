@@ -4,6 +4,5 @@ public record ProductsRecord(
         String code,
         String name,
         String description,
-        Double price,
-        Integer quantity
+        Double price
 ) {}

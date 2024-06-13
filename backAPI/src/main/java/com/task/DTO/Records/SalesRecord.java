@@ -3,7 +3,7 @@ package com.task.DTO.Records;
 public record SalesRecord(
         String code,
         String date,
-        Integer amount,
+        Double price,
         String clientCode,
         String productCode
 ) {}

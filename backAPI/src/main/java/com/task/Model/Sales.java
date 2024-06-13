@@ -22,8 +22,8 @@ public class Sales {
     private String code;
     @Column(name = "sale_date")
     private Date date;
-    @Column(name = "amount")
-    private Integer amount;
+    @Column(name = "price")
+    private Double price;
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Clients client;

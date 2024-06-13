@@ -14,8 +14,7 @@ public class ProductsMapper implements Function<Products, ProductsRecord> {
                 products.getCode(),
                 products.getName(),
                 products.getDescription(),
-                products.getPrice(),
-                products.getQuantity()
+                products.getPrice()
         );
     }
 }

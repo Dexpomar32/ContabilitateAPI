@@ -94,7 +94,7 @@ public class SalesService {
     }
 
     public boolean check(Sales sale) {
-        return Stream.of(sale.getDate(), sale.getAmount(), sale.getClientCode())
+        return Stream.of(sale.getDate(), sale.getPrice(), sale.getClientCode())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 

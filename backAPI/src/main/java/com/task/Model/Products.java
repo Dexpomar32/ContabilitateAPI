@@ -25,6 +25,4 @@ public class Products {
     private String description;
     @Column(name = "price")
     private Double price;
-    @Column(name = "stock_quantity")
-    private Integer quantity;
 }
