@@ -83,8 +83,8 @@ public class IncomesService {
     }
 
     public boolean check(Incomes incomes) {
-        return Stream.of(incomes.getDate(), incomes.getAmount(), incomes.getSaleCode())
-                .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+        return Stream.of(incomes.getDate(), incomes.getAmount())
+                .anyMatch(Objects::isNull);
     }
 
     private String generateUniqueCode() {

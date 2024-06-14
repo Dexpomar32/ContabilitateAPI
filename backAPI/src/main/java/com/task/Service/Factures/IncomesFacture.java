@@ -66,7 +66,7 @@ public class IncomesFacture {
         List<Product> productList = new ArrayList<>();
         double doubleValue = product.getPrice();
         float floatValue = (float) doubleValue;
-        productList.add(new Product(product.getName(), sale.getAmount(), floatValue));
+        productList.add(new Product(product.getName(), sale.getPrice().intValue(), floatValue));
         productList = codingErrorPdfInvoiceCreator.modifyProductList(productList);
         codingErrorPdfInvoiceCreator.createProduct(productList);
 

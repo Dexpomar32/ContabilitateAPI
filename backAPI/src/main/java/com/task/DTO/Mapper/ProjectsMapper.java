@@ -20,7 +20,8 @@ public class ProjectsMapper implements Function<Projects, ProjectsRecord> {
                 formatDate(projects.getStartDate()),
                 formatDate(projects.getEndDate()),
                 projects.getClient().getCode(),
-                projects.getPercentage()
+                projects.getPercentage(),
+                projects.getBudget()
         );
     }
 

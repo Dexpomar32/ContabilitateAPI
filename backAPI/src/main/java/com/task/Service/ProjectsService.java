@@ -12,6 +12,8 @@ import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,19 +21,27 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
-@SuppressWarnings("unchecked")
 public class ProjectsService {
     private final ProjectsRepository projectsRepository;
     private final ProjectsMapper projectsMapper;
     private final ClientsRepository clientsRepository;
     private final EntityManager entityManager;
+    private final ExpensesService expensesService;
+    private final ProductsService productsService;
+    private final SalesService salesService;
 
     @Autowired
-    public ProjectsService(ProjectsRepository projectsRepository, ProjectsMapper projectsMapper, ClientsRepository clientsRepository, EntityManager entityManager) {
+    public ProjectsService(ProjectsRepository projectsRepository, ProjectsMapper projectsMapper,
+                           ClientsRepository clientsRepository, EntityManager entityManager,
+                           ExpensesService expensesService, ProductsService productsService,
+                           SalesService salesService) {
         this.projectsRepository = projectsRepository;
         this.projectsMapper = projectsMapper;
         this.clientsRepository = clientsRepository;
         this.entityManager = entityManager;
+        this.expensesService = expensesService;
+        this.productsService = productsService;
+        this.salesService = salesService;
     }
 
     public Optional<List<ProjectsRecord>> getAll() {
@@ -60,7 +70,25 @@ public class ProjectsService {
 
         Clients client = clientsRepository.findByCode(project.getClientCode());
         project.setClient(client);
+        Expenses expenses = new Expenses();
+        Products products = new Products();
+        Sales sales = new Sales();
+        expenses.setDate(Date.valueOf(LocalDate.now()));
+        expenses.setAmount(project.getBudget());
+        expenses.setDescription("Expense for project " + project.getCode());
+        expenses.setProjectCode(project.getCode());
+        products.setPrice(project.getBudget() * 1.20);
+        products.setDescription("Project " + project.getCode());
+        products.setName(project.getName());
+        products.setCode(productsService.generateUniqueCode());
+        sales.setClientCode(client.getCode());
+        sales.setProductCode(products.getCode());
+        sales.setPrice(project.getBudget() * 1.20);
+        sales.setDate(Date.valueOf(LocalDate.now()));
         projectsRepository.save(project);
+        expensesService.create(expenses);
+        productsService.create(products);
+        salesService.create(sales);
         return Optional.ofNullable(projectsMapper.apply(project));
     }
 
@@ -110,7 +138,7 @@ public class ProjectsService {
 
     public boolean check(Projects project) {
         return Stream.of(project.getName(), project.getDescription(), project.getStatus(), project.getStartDate(),
-                        project.getEndDate(), project.getClientCode(), project.getPercentage())
+                        project.getEndDate(), project.getClientCode(), project.getPercentage(), project.getBudget())
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 

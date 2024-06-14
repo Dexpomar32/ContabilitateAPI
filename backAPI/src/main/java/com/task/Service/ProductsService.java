@@ -82,7 +82,7 @@ public class ProductsService {
                 .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
     }
 
-    private String generateUniqueCode() {
+    public String generateUniqueCode() {
         String uniqueCode;
         do {
             uniqueCode = CodeGenerator.generateCode("PRD");

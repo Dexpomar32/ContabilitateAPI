@@ -53,7 +53,6 @@ public class ContractsService {
             contract.setCode(generateUniqueCode());
         }
 
-        System.out.println(contract);
         Clients client = clientsRepository.findByCode(contract.getClient().getCode());
         contract.setClient(client);
         contractsRepository.save(contract);

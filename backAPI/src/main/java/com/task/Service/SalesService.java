@@ -2,9 +2,9 @@ package com.task.Service;
 
 import com.task.DTO.Mapper.SalesMapper;
 import com.task.DTO.Records.SalesRecord;
-import com.task.Model.Clients;
-import com.task.Model.Sales;
+import com.task.Model.*;
 import com.task.Repository.ClientsRepository;
+import com.task.Repository.ProductsRepository;
 import com.task.Repository.SalesRepository;
 import com.task.Utils.CodeGenerator;
 import com.task.Utils.NullAwareBeanUtils;
@@ -21,12 +21,18 @@ public class SalesService {
     private final SalesRepository salesRepository;
     private final SalesMapper salesMapper;
     private final ClientsRepository clientsRepository;
+    private final IncomesService incomesService;
+    private final ProductsRepository productsRepository;
 
     @Autowired
-    public SalesService(SalesRepository salesRepository, SalesMapper salesMapper, ClientsRepository clientsRepository) {
+    public SalesService(SalesRepository salesRepository, SalesMapper salesMapper,
+                        ClientsRepository clientsRepository, IncomesService incomesService,
+                        ProductsRepository productsRepository) {
         this.salesRepository = salesRepository;
         this.salesMapper = salesMapper;
         this.clientsRepository = clientsRepository;
+        this.incomesService = incomesService;
+        this.productsRepository = productsRepository;
     }
 
     public Optional<List<SalesRecord>> getAll() {
@@ -54,9 +60,15 @@ public class SalesService {
         }
 
         Clients clients = clientsRepository.findByCode(sale.getClientCode());
-
+        Products products = productsRepository.findByCode(sale.getProductCode());
+        Incomes incomes = new Incomes();
+        incomes.setDate(sale.getDate());
+        incomes.setAmount(sale.getPrice());
+        incomes.setSaleCode(sale.getCode());
         sale.setClient(clients);
+        sale.setProduct(products);
         salesRepository.save(sale);
+        incomesService.create(incomes);
         return Optional.ofNullable(salesMapper.apply(sale));
     }
 
@@ -94,8 +106,8 @@ public class SalesService {
     }
 
     public boolean check(Sales sale) {
-        return Stream.of(sale.getDate(), sale.getPrice(), sale.getClientCode())
-                .anyMatch(field -> Objects.isNull(field) || (field instanceof String && ((String) field).isEmpty()));
+        return Stream.of(sale.getDate(), sale.getPrice())
+                .anyMatch(Objects::isNull);
     }
 
     private String generateUniqueCode() {
