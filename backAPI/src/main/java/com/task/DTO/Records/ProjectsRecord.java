@@ -9,5 +9,5 @@ public record ProjectsRecord(
         String endDate,
         String clientCode,
         Integer percentage,
-        Double budget
+        Integer budget
 ) {}

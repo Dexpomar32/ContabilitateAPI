@@ -24,7 +24,7 @@ public class Expenses {
     @Column(name = "date")
     private Date date;
     @Column(name = "amount")
-    private Double amount;
+    private Integer amount;
     @Column(name = "description")
     private String description;
     @OneToOne(cascade = CascadeType.PERSIST)

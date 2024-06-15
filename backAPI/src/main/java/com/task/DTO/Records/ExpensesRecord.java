@@ -3,7 +3,7 @@ package com.task.DTO.Records;
 public record ExpensesRecord(
         String code,
         String date,
-        Double amount,
+        Integer amount,
         String description,
         String projectCode
 ) {}

@@ -2,6 +2,7 @@ package com.task.Service;
 
 import com.task.DTO.Mapper.IncomesMapper;
 import com.task.DTO.Records.IncomesRecord;
+import com.task.DTO.Records.SalesRecord;
 import com.task.Model.Incomes;
 import com.task.Model.Sales;
 import com.task.Repository.IncomesRepository;
@@ -11,6 +12,7 @@ import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -80,6 +82,21 @@ public class IncomesService {
             optionalIncome.ifPresent(incomesRepository::delete);
             return incomesMapper.apply(expense);
         });
+    }
+
+    public Optional<List<IncomesRecord>> history(Date date) {
+        List<IncomesRecord> incomesRecordList = incomesRepository
+                .history(date)
+                .stream()
+                .map(incomesMapper)
+                .toList();
+
+        return Optional.of(incomesRecordList);
+    }
+    
+    public Optional<Double> total(Date date) {
+        Double total = incomesRepository.total(date);
+        return Optional.of(total);
     }
 
     public boolean check(Incomes incomes) {

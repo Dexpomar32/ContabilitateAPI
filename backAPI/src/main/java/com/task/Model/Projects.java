@@ -37,7 +37,7 @@ public class Projects {
     @Column(name = "completion_percentage")
     private Integer percentage;
     @Column(name = "budget")
-    private Double budget;
+    private Integer budget;
     @Transient
     private String clientCode;
 }

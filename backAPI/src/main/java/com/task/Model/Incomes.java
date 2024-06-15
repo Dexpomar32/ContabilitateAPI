@@ -24,7 +24,7 @@ public class Incomes {
     @Column(name = "sale_date")
     private Date date;
     @Column(name = "amount")
-    private Double amount;
+    private Integer amount;
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "sale_id")
     private Sales sale;

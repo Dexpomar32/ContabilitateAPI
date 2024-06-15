@@ -3,6 +3,6 @@ package com.task.DTO.Records;
 public record IncomesRecord(
         String code,
         String date,
-        Double amount,
+        Integer amount,
         String saleCode
 ) {}

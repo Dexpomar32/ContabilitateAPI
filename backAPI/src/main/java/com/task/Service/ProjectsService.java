@@ -77,13 +77,13 @@ public class ProjectsService {
         expenses.setAmount(project.getBudget());
         expenses.setDescription("Expense for project " + project.getCode());
         expenses.setProjectCode(project.getCode());
-        products.setPrice(project.getBudget() * 1.20);
+        products.setPrice((int) (project.getBudget() * 1.20));
         products.setDescription("Project " + project.getCode());
         products.setName(project.getName());
         products.setCode(productsService.generateUniqueCode());
         sales.setClientCode(client.getCode());
         sales.setProductCode(products.getCode());
-        sales.setPrice(project.getBudget() * 1.20);
+        sales.setPrice((int) (project.getBudget() * 1.20));
         sales.setDate(Date.valueOf(LocalDate.now()));
         projectsRepository.save(project);
         expensesService.create(expenses);

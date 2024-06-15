@@ -26,3 +26,5 @@ authentication:
   app:
     jwtSecret: mySuperSecretAndLongKey123!@!$DSHJKFDSKFHJKbsdjdkbkjhHFHGgkJGHFhjCNVBGJBHJJGHJgKBKJ
     jwtExpirationMs: 43200000
+pdf:
+  directory: backAPI/src/main/resources/Factures
