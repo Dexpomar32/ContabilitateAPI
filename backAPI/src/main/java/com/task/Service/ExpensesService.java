@@ -11,6 +11,7 @@ import com.task.Utils.NullAwareBeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -80,6 +81,21 @@ public class ExpensesService {
             optionalExpense.ifPresent(expensesRepository::delete);
             return expensesMapper.apply(expense);
         });
+    }
+
+    public Optional<List<ExpensesRecord>> history(Date date) {
+        List<ExpensesRecord> expensesRecordList = expensesRepository
+                .history(date)
+                .stream()
+                .map(expensesMapper)
+                .toList();
+
+        return Optional.of(expensesRecordList);
+    }
+
+    public Optional<Double> total(Date date) {
+        Double total = expensesRepository.total(date);
+        return Optional.of(total);
     }
 
     public boolean check(Expenses expense) {

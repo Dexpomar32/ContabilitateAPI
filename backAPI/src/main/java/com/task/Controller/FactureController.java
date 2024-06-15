@@ -1,7 +1,7 @@
 package com.task.Controller;
 
+import com.task.Service.Factures.ExpensesFacture;
 import com.task.Service.Factures.IncomesFacture;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -23,7 +22,6 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @SuppressWarnings("unused")
 @PreAuthorize("hasRole('ADMIN')")
@@ -31,10 +29,12 @@ import java.util.Optional;
 @RequestMapping("/api/v1/facture")
 public class FactureController {
     private final IncomesFacture incomesFacture;
+    private final ExpensesFacture expensesFacture;
 
     @Autowired
-    public FactureController(IncomesFacture incomesFacture) {
+    public FactureController(IncomesFacture incomesFacture, ExpensesFacture expensesFacture) {
         this.incomesFacture = incomesFacture;
+        this.expensesFacture = expensesFacture;
     }
 
     @GetMapping("/incomes")
@@ -49,8 +49,20 @@ public class FactureController {
         }
     }
 
-    @GetMapping("/download-incomes")
-    public ResponseEntity<byte[]> downloadPDF(@RequestParam String name) throws IOException {
+    @GetMapping("/expenses")
+    public ResponseEntity<Map<String, String>> expenses(@RequestParam Date date) throws FileNotFoundException {
+        String name = expensesFacture.generate(date);
+        Map<String, String> response = new HashMap<>();
+        response.put("filename", name);
+        if (name != null) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/downloadPDF")
+    public ResponseEntity<byte[]> downloadIncomes(@RequestParam String name) throws IOException {
         Path path = Paths.get("/ContabilitateAPI/" + name);
         byte[] fileContent = Files.readAllBytes(path);
 
