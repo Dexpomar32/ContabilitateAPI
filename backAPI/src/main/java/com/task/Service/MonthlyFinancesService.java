@@ -9,6 +9,7 @@ import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +43,8 @@ public class MonthlyFinancesService {
 
         for (Object[] result : results) {
             Integer day = (Integer) result[0];
-            Double previousMonthIncome = (Double) result[1];
-            Double currentMonthIncome = (Double) result[2];
+            BigDecimal previousMonthIncome = (BigDecimal) result[1];
+            BigDecimal currentMonthIncome = (BigDecimal) result[2];
             MonthlyIncomes monthlyProfit = new MonthlyIncomes(day, previousMonthIncome, currentMonthIncome);
             monthlyProfitList.add(monthlyProfit);
         }
@@ -69,8 +70,8 @@ public class MonthlyFinancesService {
 
         for (Object[] result : results) {
             Integer day = (Integer) result[0];
-            Double previousMonthExpense = (Double) result[1];
-            Double currentMonthExpense = (Double) result[2];
+            BigDecimal previousMonthExpense = (BigDecimal) result[1];
+            BigDecimal currentMonthExpense = (BigDecimal) result[2];
             MonthlyExpenses monthlyExpenses = new MonthlyExpenses(day, previousMonthExpense, currentMonthExpense);
             monthlyExpenseList.add(monthlyExpenses);
         }

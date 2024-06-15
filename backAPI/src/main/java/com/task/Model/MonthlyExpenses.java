@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MonthlyExpenses {
     private Integer day;
-    private Double previousMonthExpense;
-    private Double currentMonthExpense;
+    private BigDecimal previousMonthExpense;
+    private BigDecimal currentMonthExpense;
 }
