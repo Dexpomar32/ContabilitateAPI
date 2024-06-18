@@ -25,11 +25,11 @@ public class ExpensesFacture {
     private final String pdfDirectory;
 
     @Autowired
-    public ExpensesFacture(ExpensesService expensesService, ProjectsService projectsService,
-                          @Value("${pdf.directory}") String pdfDirectory) {
+    public ExpensesFacture(ExpensesService expensesService, ProjectsService projectsService/*,
+                          @Value("${pdf.directory}") String pdfDirectory*/) {
         this.expensesService = expensesService;
         this.projectsService = projectsService;
-        this.pdfDirectory = pdfDirectory;
+        this.pdfDirectory = "backAPI/src/main/resources/Factures";
     }
 
     public String generate(Date date) throws FileNotFoundException {
