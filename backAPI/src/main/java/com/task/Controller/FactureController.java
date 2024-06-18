@@ -63,8 +63,9 @@ public class FactureController {
 
     @GetMapping("/downloadPDF")
     public ResponseEntity<byte[]> downloadIncomes(@RequestParam String name) throws IOException {
-        Path path = Paths.get("/ContabilitateAPI/" + name);
-        byte[] fileContent = Files.readAllBytes(path);
+//        Path path = Paths.get("/ContabilitateAPI/" + name);
+//        byte[] fileContent = Files.readAllBytes(path);
+        byte[] fileContent = Files.readAllBytes(Path.of(name));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);

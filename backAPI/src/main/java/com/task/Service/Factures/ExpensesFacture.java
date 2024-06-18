@@ -22,24 +22,25 @@ import java.util.Optional;
 public class ExpensesFacture {
     private final ExpensesService expensesService;
     private final ProjectsService projectsService;
-    private final String pdfDirectory;
+//    private final String pdfDirectory;
 
     @Autowired
     public ExpensesFacture(ExpensesService expensesService, ProjectsService projectsService/*,
                           @Value("${pdf.directory}") String pdfDirectory*/) {
         this.expensesService = expensesService;
         this.projectsService = projectsService;
-        this.pdfDirectory = "backAPI/src/main/resources/Factures";
+//        this.pdfDirectory = pdfDirectory;
     }
 
     public String generate(Date date) throws FileNotFoundException {
-        cleanPdfDirectory();
+//        cleanPdfDirectory();
 
         Optional<List<ExpensesRecord>> optionalExpensesRecordsList = expensesService.history(date);
         List<ExpensesRecord> expensesRecords = optionalExpensesRecordsList.orElseThrow(() -> new RuntimeException("expenses not found"));
         String pdfName = "ExpensesFacture-" + date + ".pdf";
-        String fullPath = pdfDirectory + File.separator + pdfName;
-        CodingErrorPdfInvoiceCreator codingErrorPdfInvoiceCreator = new CodingErrorPdfInvoiceCreator(fullPath);
+//        String fullPath = pdfDirectory + File.separator + pdfName;
+//        CodingErrorPdfInvoiceCreator codingErrorPdfInvoiceCreator = new CodingErrorPdfInvoiceCreator(fullPath);
+        CodingErrorPdfInvoiceCreator codingErrorPdfInvoiceCreator = new CodingErrorPdfInvoiceCreator(pdfName);
         codingErrorPdfInvoiceCreator.createDocument();
 
         HeaderDetails headerDetails = new HeaderDetails();
@@ -90,15 +91,15 @@ public class ExpensesFacture {
         return pdfName;
     }
 
-    private void cleanPdfDirectory() {
-        File directory = new File(pdfDirectory);
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile()) {
-                    file.delete();
-                }
-            }
-        }
-    }
+//    private void cleanPdfDirectory() {
+//        File directory = new File(pdfDirectory);
+//        File[] files = directory.listFiles();
+//        if (files != null) {
+//            for (File file : files) {
+//                if (file.isFile()) {
+//                    file.delete();
+//                }
+//            }
+//        }
+//    }
 }
