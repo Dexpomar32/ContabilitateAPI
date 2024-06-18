@@ -27,4 +27,4 @@ authentication:
     jwtSecret: mySuperSecretAndLongKey123!@!$DSHJKFDSKFHJKbsdjdkbkjhHFHGgkJGHFhjCNVBGJBHJJGHJgKBKJ
     jwtExpirationMs: 43200000
 pdf:
-  directory: backAPI/src/main/resources/Factures
+  directory: /backAPI/src/main/resources/Factures
