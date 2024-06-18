@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Уровень логирования по умолчанию для всех логгеров -->
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- Консольный аппендер (для вывода логов в консоль) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Файловый аппендер (для записи логов в файл) -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/spring-boot-application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Ежедневное архивирование логов -->
+            <fileNamePattern>logs/spring-boot-application.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- Количество архивных файлов для хранения -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Уровни логирования для различных пакетов (опционально) -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="com.yourcompany" level="DEBUG"/>
+
+</configuration>
