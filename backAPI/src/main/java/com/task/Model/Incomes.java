@@ -12,7 +12,9 @@ import java.sql.Date;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "Income")
+@Table(name = "Income", indexes = {
+        @Index(name = "Index_Income", columnList = "income_code")
+})
 public class Incomes {
     @Id
     @Column(name = "income_id")
