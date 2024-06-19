@@ -2,7 +2,6 @@ package com.task.Service;
 
 import com.task.DTO.Mapper.IncomesMapper;
 import com.task.DTO.Records.IncomesRecord;
-import com.task.DTO.Records.SalesRecord;
 import com.task.Model.Incomes;
 import com.task.Model.Sales;
 import com.task.Repository.IncomesRepository;
@@ -33,7 +32,7 @@ public class IncomesService {
 
     public Optional<List<IncomesRecord>> getAll() {
         List<IncomesRecord> incomesRecordList = incomesRepository
-                .findAll()
+                .findAllWithIndex()
                 .stream()
                 .map(incomesMapper)
                 .toList();

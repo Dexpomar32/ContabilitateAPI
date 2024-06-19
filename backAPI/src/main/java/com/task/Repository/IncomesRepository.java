@@ -17,4 +17,6 @@ public interface IncomesRepository extends JpaRepository<Incomes, String> {
     List<Incomes> history(@Param("date") Date date);
     @Query("SELECT SUM(i.amount) FROM Incomes i WHERE i.date = :date")
     Double total(@Param("date") Date date);
+    @Query(value = "SELECT * FROM Income FORCE INDEX (Index_Income)", nativeQuery = true)
+    List<Incomes> findAllWithIndex();
 }
